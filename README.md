@@ -1,7 +1,6 @@
----
-layout: false
----
-个人博客页面，采用Hexo生成
+## 个人博客页面
+
+采用Hexo生成
 
 访问地址：https://sreok.cn
 
