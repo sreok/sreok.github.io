@@ -128,12 +128,14 @@ a:hover, a:active {
 .content {
 	height: auto;
 	float: right;
-	width: 70%;
+	/* 宽度 */
+	width: 75%;
 	margin-top:60px;
 }
 
 .page-top{
-	width: 70%;
+	/* 宽度 */
+	width: 75%;
 	position: fixed;
 	right: 0;
 	z-index: 3;
@@ -193,7 +195,8 @@ a:hover, a:active {
 
 }
 .sidebar {
-	width: 30%;
+	/* 侧边栏宽度 */
+	width: 25%;
 	-webkit-background-size: cover;
 	background-size: cover;
 	background-color: #fff;
@@ -235,6 +238,13 @@ a:hover, a:active {
 				color: #464646;
 				font-size: 2rem;
 				font-weight: bold;
+			}
+			
+			img {
+				  max-width: 100%;
+				  max-width: 100%;
+				  height: auto;
+				  border-radius: 100%;
 			}
 		}
 

@@ -22,6 +22,13 @@ p {
 a {
   text-decoration: none;
 }
+ 
+/* 圆形头像 */
+.title img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 100%;
+}
 
 a:link, a:visited {
   opacity: 1;
@@ -111,12 +118,14 @@ a:hover, a:active {
 .content {
   height: auto;
   float: right;
-  width: 70%;
+  /* 宽度 */
+  width: 75%;
   margin-top: 60px;
 }
 
 .page-top {
-  width: 70%;
+  /* 宽度 */
+  width: 75%;
   position: fixed;
   right: 0;
   z-index: 3;
@@ -170,7 +179,8 @@ a:hover, a:active {
 }
 
 .sidebar {
-  width: 30%;
+  /* 侧边栏宽度 */
+  width: 25%;
   -webkit-background-size: cover;
   background-size: cover;
   background-color: #fff;
@@ -180,7 +190,7 @@ a:hover, a:active {
   left: 0;
   position: fixed;
   z-index: 4;
-  border-right: 1px solid #f2f2f2;
+  border-right: 1px solid #e2e2e2;
 }
 .sidebar .logo-title {
   text-align: center;
