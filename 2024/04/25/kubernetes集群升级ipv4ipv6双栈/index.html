@@ -60,13 +60,13 @@ pod-cidr
 
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--service-cluster-ip-range=10.96.0.0/12,3000::/112</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424154319890.png" alt="image-20240424154319890"></p>
+<p><img src="/images/image-vbud.png" alt="image-20240424154319890"></p>
 <h4 id="修改kube-controller-manager"><a href="#修改kube-controller-manager" class="headerlink" title="修改kube-controller-manager"></a>修改kube-controller-manager</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/kubernetes/manifests/kube-controller-manager.yaml</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424154354671.png" alt="image-20240424154354671"></p>
+<p><img src="/images/image-vthx.png" alt="image-20240424154354671"></p>
 <h4 id="修改kube-proxy"><a href="#修改kube-proxy" class="headerlink" title="修改kube-proxy"></a>修改kube-proxy</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit cm -n kube-system kube-proxy</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424155114938.png" alt="image-20240424155114938"></p>
+<p><img src="/images/image-veqq.png" alt="image-20240424155114938"></p>
 <p>重启kube-proxy容器</p>
 <figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get pod -n kube-system | grep kube-proxy | awk &#x27;&#123;print $1&#125;&#x27; | xargs kubectl delete pod -n kube-system</span><br></pre></td></tr></table></figure>
 
@@ -74,27 +74,27 @@ pod-cidr
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&quot;ipam&quot;: &#123;</span><br><span class="line">    &quot;type&quot;: &quot;calico-ipam&quot;,</span><br><span class="line">    &quot;assign_ipv4&quot;: &quot;true&quot;,</span><br><span class="line">    &quot;assign_ipv6&quot;: &quot;true&quot;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424155614010.png" alt="image-20240424155614010"></p>
+<p><img src="/images/image-zwor.png" alt="image-20240424155614010"></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit ds -n kube-system calico-node</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># 设置自动获取ipv6地址</span><br><span class="line">- name: IP6</span><br><span class="line">  value: autodetect</span><br><span class="line"># felix启用ipv6支持</span><br><span class="line">- name: FELIX_IPV6SUPPORT</span><br><span class="line">  value: &quot;true&quot;</span><br><span class="line"># 设置ipv6地址池，与pod-cidr一致，官方说使用kubeadm安装的集群不需要配置，但是没试过。</span><br><span class="line">- name: CALICO_IPV6POOL_CIDR</span><br><span class="line">  value: 2000::/112</span><br><span class="line"># pod通信使用vxlan封装，如果节点跨子网，使容器之间可以访问</span><br><span class="line">- name: CALICO_IPV6POOL_VXLAN</span><br><span class="line">  value: CrossSubnet</span><br><span class="line"># 开启ipv6 NAT功能，使容器可以访问外部的ipv6地址</span><br><span class="line">- name: CALICO_IPV6POOL_NAT_OUTGOING</span><br><span class="line">  value: &quot;true&quot;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424160040807.png" alt="image-20240424160040807"></p>
+<p><img src="/images/image-zktz.png" alt="image-20240424160040807"></p>
 <p>等待calico重启</p>
 <h4 id="修改kubeadm-config"><a href="#修改kubeadm-config" class="headerlink" title="修改kubeadm-config"></a>修改kubeadm-config</h4><p>上方修改的apiserver、controller-manager是静态文件，如果集群升级kubeadm-config会重置静态文件，导致ipv6的配置消失，所以将这个配置文件同时修改</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit cm -n kube-system kubeadm-config</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240425091454939.png" alt="image-20240425091454939"></p>
+<p><img src="/images/image-bitu.png" alt="image-20240425091454939"></p>
 <h3 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h3><h4 id="查看ipv6地址池"><a href="#查看ipv6地址池" class="headerlink" title="查看ipv6地址池"></a>查看ipv6地址池</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get ippool</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424160631893.png" alt="image-20240424160631893"></p>
+<p><img src="/images/image-rkbg.png" alt="image-20240424160631893"></p>
 <h4 id="pod获取ipv6地址"><a href="#pod获取ipv6地址" class="headerlink" title="pod获取ipv6地址"></a>pod获取ipv6地址</h4><p>重启pod，查看获取的ipv6地址</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">kubectl delete pod -n xxxx xxxxxx-xxx-xxx --force</span><br><span class="line"></span><br><span class="line">kubectl get pod - n xxxx xxxxxx-xxx-xxx -o jsonpath=&#123;.status.podIPs&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424161315923.png" alt="image-20240424161315923"></p>
+<p><img src="/images/image-tbnz.png" alt="image-20240424161315923"></p>
 <h4 id="services配置双栈"><a href="#services配置双栈" class="headerlink" title="services配置双栈"></a>services配置双栈</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl edit svc -n xxxx xxxxx-svc</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424161359493.png" alt="image-20240424161359493"></p>
+<p><img src="/images/image-yoqx.png" alt="image-20240424161359493"></p>
 <ul>
 <li><p><code>SingleStack</code>：单栈 Service。控制面使用第一个配置的服务集群 IP 范围为 Service 分配集群 IP</p>
 </li>
@@ -107,7 +107,7 @@ pod-cidr
 <p><code>注意：ipFamilies 字段修改是有条件的：你可以添加或删除第二个 IP 地址族， 但你不能更改现有 Service 的主要 IP 地址。</code></p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe svc -n xxxx xxxxxx-svc</span><br></pre></td></tr></table></figure>
 
-<p><img src="C:\Users\Elijah\AppData\Roaming\Typora\typora-user-images\image-20240424162335499.png" alt="image-20240424162335499"></p>
+<p><img src="/images/image-unvc.png" alt="image-20240424162335499"></p>
 <h3 id="service示例"><a href="#service示例" class="headerlink" title="service示例"></a>service示例</h3><h4 id="新增service单栈ipv6"><a href="#新增service单栈ipv6" class="headerlink" title="新增service单栈ipv6"></a>新增service单栈ipv6</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">  name: nginx</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  ipFamilies:</span><br><span class="line">  - IPv6</span><br><span class="line">  ipFamilyPolicy: SingleStack</span><br><span class="line">  ports:</span><br><span class="line">  - nodePort: 30080</span><br><span class="line">    port: 80</span><br><span class="line">    protocol: TCP</span><br><span class="line">    targetPort: 80</span><br><span class="line">  selector:</span><br><span class="line">    app: nginx</span><br><span class="line">  sessionAffinity: None</span><br><span class="line">  type: NodePort</span><br></pre></td></tr></table></figure>
 
 <h4 id="service双栈"><a href="#service双栈" class="headerlink" title="service双栈"></a>service双栈</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  labels:</span><br><span class="line">    app: nginx</span><br><span class="line">  name: nginx</span><br><span class="line">  namespace: default</span><br><span class="line">spec:</span><br><span class="line">  ipFamilies:</span><br><span class="line">  - IPv6</span><br><span class="line">  - IPv4</span><br><span class="line">  ipFamilyPolicy: PreferDualStack</span><br><span class="line">  ports:</span><br><span class="line">  - nodePort: 30081</span><br><span class="line">    port: 80</span><br><span class="line">    protocol: TCP</span><br><span class="line">    targetPort: 80</span><br><span class="line">  selector:</span><br><span class="line">    app: nginx</span><br><span class="line">  sessionAffinity: None</span><br><span class="line">  type: NodePort</span><br></pre></td></tr></table></figure>
