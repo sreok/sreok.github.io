@@ -177,6 +177,18 @@ a:hover, a:active {
   display: initial;
   padding-right: 40px;
 }
+/* 搜索按钮样式 */
+.page-top .information .search_btn {
+  float: left;
+  padding-top: 5px;
+  margin-right: -10px;
+}
+.page-top .information .search_btn li {
+  display: initial;
+  padding-right: 40px;
+  font-size: 20px;
+}
+
 
 .sidebar {
   /* 侧边栏宽度 */
