@@ -1,0 +1,48 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>【云原生】使用Cilium作为Kubernetes CNI插件 · Elijah</title><meta name="description" content="前提条件
+Kubernetes must be configured to use CNI
+
+see Network Plugin Requirements
+
+
+Linux kernel &amp;gt;&amp;#x3D; 4.9.17
+
+升级内核，原文地址：yum更新Linux内核 - Elijah Blog "><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【云原生】使用Cilium作为Kubernetes CNI插件</a></h3></div><div class="post-content"><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a><strong>前提条件</strong></h3><ul>
+<li><p>Kubernetes must be configured to use CNI</p>
+<ul>
+<li>see <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/#network-plugin-requirements">Network Plugin Requirements</a></li>
+</ul>
+</li>
+<li><p>Linux kernel &gt;&#x3D; 4.9.17</p>
+<ul>
+<li>升级内核，原文地址：<a target="_blank" rel="noopener" href="https://sreok.cn/archives/419a2d41-26b9-4c32-bc97-14c18c39e384">yum更新Linux内核 - Elijah Blog (</a><a target="_blank" rel="noopener" href="http://sreok.cn/">sreok.cn</a><a target="_blank" rel="noopener" href="https://sreok.cn/archives/419a2d41-26b9-4c32-bc97-14c18c39e384">)</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="卸载集群中的CNI插件"><a href="#卸载集群中的CNI插件" class="headerlink" title="卸载集群中的CNI插件"></a><strong>卸载集群中的CNI插件</strong></h3><p>原文地址：<a target="_blank" rel="noopener" href="https://sreok.cn/archives/10016b39-5056-4216-976c-57668927c05d">CNI插件完全卸载指南（Flannel、Calico、Cilium） - Elijah Blog (</a><a target="_blank" rel="noopener" href="http://sreok.cn/">sreok.cn</a><a target="_blank" rel="noopener" href="https://sreok.cn/archives/10016b39-5056-4216-976c-57668927c05d">)</a></p>
+<h3 id="安装cilium"><a href="#安装cilium" class="headerlink" title="安装cilium"></a><strong>安装cilium</strong></h3><p>下载地址：<a target="_blank" rel="noopener" href="https://github.com/cilium/cilium-cli/releases">Releases · cilium&#x2F;cilium-cli (</a><a target="_blank" rel="noopener" href="http://github.com/">github.com</a><a target="_blank" rel="noopener" href="https://github.com/cilium/cilium-cli/releases">)</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf cilium-linux-amd64.tar.gz</span><br><span class="line">mv cilium /usr/local/bin</span><br><span class="line">rm -f cilium-linux-amd64.tar.gz</span><br></pre></td></tr></table></figure>
+
+<h3 id="启用Hubble并开启UI"><a href="#启用Hubble并开启UI" class="headerlink" title="启用Hubble并开启UI"></a><strong>启用Hubble并开启UI</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cilium hubble enable --ui</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>如果已使用 <code>cilium hubble enable</code> 启用 Hubble，则必须首先使用 <code>cilium hubble disable</code> 暂时禁用 Hubble。这是因为 Hubble UI 无法在运行时添加。</p>
+</blockquote>
+<h3 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a><strong>已知问题</strong></h3><p><code>cilium daemonset处于Init:CrashLoopBackOff状态</code></p>
+<h4 id="日志信息"><a href="#日志信息" class="headerlink" title="日志信息"></a><strong>日志信息</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root@master ~]# kubectl logs -f -n kube-system cilium-jdrzf mount-cgroup</span><br><span class="line">nsenter: cannot open /hostproc/1/ns/cgroup: No such file or directory</span><br></pre></td></tr></table></figure>
+
+<h4 id="原因"><a href="#原因" class="headerlink" title="原因"></a><strong>原因</strong></h4><p>内核版本低于要求内核</p>
+<h4 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a><strong>解决方法</strong></h4><p>升级内核版本</p>
+<p>原文地址：<a target="_blank" rel="noopener" href="https://sreok.cn/archives/419a2d41-26b9-4c32-bc97-14c18c39e384">yum更新Linux内核（CentOS 7） - Elijah Blog (</a><a target="_blank" rel="noopener" href="http://sreok.cn/">sreok.cn</a><a target="_blank" rel="noopener" href="https://sreok.cn/archives/419a2d41-26b9-4c32-bc97-14c18c39e384">)</a></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2024-03-11</span><i class="fa fa-tag"></i><a class="tag" href="/categories/云原生/" title="云原生">云原生 </a><a class="tag" href="/tags/Kubernetes/" title="Kubernetes">Kubernetes </a><a class="tag" href="/tags/CNI/" title="CNI">CNI </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2024/03/11/【云原生】使用Cilium作为Kubernetes CNI插件/,Elijah,【云原生】使用Cilium作为Kubernetes CNI插件,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2024/03/16/%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91%E4%BA%8C%E8%BF%9B%E5%88%B6%E9%83%A8%E7%BD%B2%20Kubernetes%20v1.29.2%20ipv4ipv6%E5%8F%8C%E6%A0%88/" title="【转载】二进制部署 Kubernetes v1.29.2 ipv4/ipv6双栈">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2024/02/16/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91Kubernetes%20%E9%83%A8%E7%BD%B2MinIO%E9%9B%86%E7%BE%A4-%E5%9B%9B%E8%8A%82%E7%82%B9(manifest%E6%96%B9%E5%BC%8F)/" title="【云原生】Kubernetes 部署MinIO集群-四节点(manifest方式)">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:true || false, 
+  verify:false|| false, 
+  app_id:'fI99ZhgQcLYvkEn59ArxksxC-gzGzoHsz',
+  app_key:'t54nFvuZ0mPdSIYuMFD5eL39',
+  placeholder:'念念不忘，必有回响...',
+  path: window.location.pathname,
+  serverURLs: '',
+  visitor:true,
+  recordIP:true,
+  avatar:'hide'
+})</script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>【笔记】GeForce RTX 2080 Ti安装NVIDIA 550.107.02驱动+CUDA Toolkit · Elijah</title><meta name="description" content="环境配置
+kernel-3.10.0-1160.119.1.el7.x86_64
+
+kernel-devel-3.10.0-1160.119.1.el7.x86_64
+
+CentOS 7.9.2009
+
+Linux x64 (AMD64&amp;#x2F;EM64T) Display Driver 550."><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【笔记】GeForce RTX 2080 Ti安装NVIDIA 550.107.02驱动+CUDA Toolkit</a></h3></div><div class="post-content"><h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><ul>
+<li><p><strong>kernel-3.10.0-1160.119.1.el7.x86_64</strong></p>
+</li>
+<li><p><strong>kernel-devel-3.10.0-1160.119.1.el7.x86_64</strong></p>
+</li>
+<li><p><strong>CentOS 7.9.2009</strong></p>
+</li>
+<li><p><strong>Linux x64 (AMD64&#x2F;EM64T) Display Driver 550.107.02</strong></p>
+</li>
+<li><p><strong>GeForce RTX 2080 Ti</strong></p>
+</li>
+</ul>
+<blockquote>
+<p>内核版本测试过5.4.227，6.9.7都不能安装驱动，降级回3.10.0就可以了</p>
+</blockquote>
+<p>查看显卡</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lspci | grep -i nvidia</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>d8:00.0 VGA compatible controller: NVIDIA Corporation TU102 [GeForce RTX 2080 Ti Rev. A] (rev a1)</p>
+<p>d8:00.1 Audio device: NVIDIA Corporation TU102 High Definition Audio Controller (rev a1)</p>
+<p>d8:00.2 USB controller: NVIDIA Corporation TU102 USB 3.1 Host Controller (rev a1)</p>
+<p>d8:00.3 Serial bus controller [0c80]: NVIDIA Corporation TU102 USB Type-C UCSI Controller (rev a</p>
+</blockquote>
+<h3 id="禁用显卡驱动"><a href="#禁用显卡驱动" class="headerlink" title="禁用显卡驱动"></a>禁用显卡驱动</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 查看是否存在</span><br><span class="line">lsmod | grep nouveau</span><br><span class="line"># 修改下方配置文件</span><br><span class="line">vi /lib/modprobe.d/dist-blacklist.conf</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-ohux.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># 应用更改</span><br><span class="line">update-initramfs -u</span><br><span class="line"># 再次查看是否存在</span><br><span class="line">lsmod | grep nouveau</span><br><span class="line"># 如果还存在，重启服务器</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 删除</span><br><span class="line">mv /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.bak</span><br><span class="line"># 重建</span><br><span class="line">dracut /boot/initramfs-$(uname -r).img $(uname -r)</span><br></pre></td></tr></table></figure>
+
+<h3 id="下载驱动"><a href="#下载驱动" class="headerlink" title="下载驱动"></a>下载驱动</h3><p>地址：<a target="_blank" rel="noopener" href="https://www.nvidia.cn/Download/index.aspx?lang=cn">https://www.nvidia.cn/Download/index.aspx?lang=cn</a></p>
+<p><img src="/images/image-rqxb.png"></p>
+<h3 id="安装驱动"><a href="#安装驱动" class="headerlink" title="安装驱动"></a>安装驱动</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 执行权限</span><br><span class="line">chmod +x NVIDIA-Linux-x86_64-550.107.02.run</span><br><span class="line"># 安装</span><br><span class="line">./NVIDIA-Linux-x86_64-550.107.02.run -no-x-check --no-opengl-files --kernel-source-path=/usr/src/kernels/5.4.227-1.el7.elrepo.x86_64</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>-no-x-check: 安装驱动时不检查X服务，非必需，已经禁用图形界面</p>
+<p>-no-opengl-files: 只安装驱动文件，不安装OpenGL文件</p>
+<p>-no-nouveau-check：安装驱动时禁用nouveau，非必需，已经禁用nouveau</p>
+<p>--kernel-source-path：内核源码包位置，安装时会修改源码包，不带该参数，默认是当前内核</p>
+</blockquote>
+<p><img src="/images/image-anmh.png"></p>
+<p><img src="/images/image-rmwg.png"></p>
+<p><img src="/images/image-nnwq.png"></p>
+<p><img src="/images/image-jhri.png"></p>
+<p><img src="/images/image-revk.png"></p>
+<p><img src="/images/image-waew.png"></p>
+<h3 id="验证驱动"><a href="#验证驱动" class="headerlink" title="验证驱动"></a>验证驱动</h3><p><img src="/images/image-pwyg.png"></p>
+<h3 id="安装CUDA-Toolkit"><a href="#安装CUDA-Toolkit" class="headerlink" title="安装CUDA Toolkit"></a>安装CUDA Toolkit</h3><p>版本信息：<a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#id5">1. CUDA 12.6 Release Notes — Release Notes 12.6 documentation (</a><a target="_blank" rel="noopener" href="http://nvidia.com/">nvidia.com</a><a target="_blank" rel="noopener" href="https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#id5">)</a></p>
+<blockquote>
+<p>对应驱动版本</p>
+</blockquote>
+<p>本次安装CentOS 7 v12.4 GA：<a target="_blank" rel="noopener" href="https://developer.nvidia.com/cuda-12-4-0-download-archive">CUDA Toolkit 12.4 Downloads | NVIDIA Developer</a></p>
+<p><img src="/images/image-wbdx.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://developer.download.nvidia.com/compute/cuda/12.4.0/local_installers/cuda_12.4.0_550.54.14_linux.run</span><br><span class="line">sh cuda_12.4.0_550.54.14_linux.run</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-jzqk.png"></p>
+<p><img src="/images/image-pwzz.png"></p>
+<h4 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a>已知问题</h4><blockquote>
+<p>Installation failed. See log at &#x2F;var&#x2F;log&#x2F;cuda-installer.log for details.</p>
+</blockquote>
+<h5 id="排查思路"><a href="#排查思路" class="headerlink" title="排查思路"></a>排查思路</h5><p>解决方案：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 查看日志</span><br><span class="line">cat /var/log/cuda-installer.log</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">[INFO]: Initializing menu</span><br><span class="line">[INFO]: nvidia-fs.setKOVersion(2.19.6)</span><br><span class="line">[INFO]: Setup complete</span><br><span class="line">[INFO]: Installing: Driver</span><br><span class="line">[INFO]: Installing: 550.54.14</span><br><span class="line">[INFO]: Executing NVIDIA-Linux-x86_64-550.54.14.run --ui=none --no-questions --accept-license --disable-nouveau --no-cc-version-check --install-libglvnd  2&gt;&amp;1</span><br><span class="line">[INFO]: Finished with code: 256</span><br><span class="line">[ERROR]: Install of driver component failed. Consult the driver log at /var/log/nvidia-installer.log for more details.</span><br><span class="line">[ERROR]: Install of 550.54.14 failed, quitting</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>安装nvidia驱动失败，继续根据提示查看日志</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cat /var/log/nvidia-installer.log </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Using built-in stream user interface</span><br><span class="line">-&gt; Detected 64 CPUs online; setting concurrency level to 32.</span><br><span class="line">-&gt; Scanning the initramfs with lsinitrd...</span><br><span class="line">-&gt; /usr/bin/lsinitrd requires a file path argument, but none was given.</span><br><span class="line">-&gt; Executing: /usr/bin/lsinitrd    /boot/initramfs-3.10.0-1160.119.1.el7.x86_64.img</span><br><span class="line">-&gt; Tagging shared libraries with chcon -t textrel_shlib_t.</span><br><span class="line">-&gt; The file &#x27;/tmp/.X0-lock&#x27; exists and appears to contain the process ID &#x27;2843&#x27; of a running X server.</span><br><span class="line">-&gt; You appear to be running an X server.  Installing the NVIDIA driver while X is running is not recommended, as doing so may prevent the installer from detecting some potential installation problems, and it may not be possible to start new graphics applications after a new driver is installed.  If you choose to continue installation, it is highly recommended that you reboot your computer after installation to use the newly installed driver. (Answer: Abort installation)</span><br><span class="line">ERROR: Installation has failed.  Please see the file &#x27;/var/log/nvidia-installer.log&#x27; for details.  You may find suggestions on fixing installation problems in the README available on the Linux driver download page at www.nvidia.com.</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>2843进程正在使用驱动，kill掉这个进程重新安装CUDA</p>
+</blockquote>
+<p>问题二</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR: The installation was canceled due to the availability or presence of an alternate driver installation. Please see /var/log/nvidia-installer.log for more details.</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>CUDA版本低于NVIDIA驱动版本</p>
+</blockquote>
+<h3 id="验证CUDA驱动"><a href="#验证CUDA驱动" class="headerlink" title="验证CUDA驱动"></a>验证CUDA驱动</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/cuda/bin/nvcc --version</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>nvcc: NVIDIA (R) Cuda compiler driver Copyright (c) 2005-2024 NVIDIA Corporation Built on Tue_Feb_27_16:19:38_PST_2024 Cuda compilation tools, release 12.4, V12.4.99 Build cuda_12.4.r12.4&#x2F;compiler.33961263_0</p>
+</blockquote>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-02-11</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/tags/GPU/" title="GPU">GPU </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2023/02/11/【笔记】GeForce RTX 2080 Ti安装NVIDIA 550.107.02驱动+CUDA Toolkit/,Elijah,【笔记】GeForce RTX 2080 Ti安装NVIDIA 550.107.02驱动+CUDA Toolkit,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/04/23/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91yum%E6%9B%B4%E6%96%B0Linux%E5%86%85%E6%A0%B8/" title="【笔记】yum更新Linux内核">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/01/29/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91Kubernetes%20Dashboard%20v7.5.0%20%E9%83%A8%E7%BD%B2%EF%BC%88Helm%E6%96%B9%E5%BC%8F%EF%BC%89/" title="【云原生】Kubernetes Dashboard v7.5.0 部署（Helm方式）">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:true || false, 
+  verify:false|| false, 
+  app_id:'fI99ZhgQcLYvkEn59ArxksxC-gzGzoHsz',
+  app_key:'t54nFvuZ0mPdSIYuMFD5eL39',
+  placeholder:'念念不忘，必有回响...',
+  path: window.location.pathname,
+  serverURLs: '',
+  visitor:true,
+  recordIP:true,
+  avatar:'hide'
+})</script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>

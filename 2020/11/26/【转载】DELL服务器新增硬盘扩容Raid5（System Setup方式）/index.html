@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>【转载】DELL服务器新增硬盘扩容Raid5（System Setup方式） · Elijah</title><meta name="description" content="转载：原文链接
+如果服务器的空间不足了，如何进行扩容？我基本上按照如何重新配置虚拟磁盘或添加其他硬盘来进行操作。我的机器上已经有三块硬盘了，组了Raid5，现在再添加一块硬盘。
+先把要添加的硬盘插入服务器，无论是在IDRAC还是管理界面，能看到新添加的硬盘（00:01:06）是Ready状态。
+
+开"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【转载】DELL服务器新增硬盘扩容Raid5（System Setup方式）</a></h3></div><div class="post-content"><p>转载：<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/704970516">原文链接</a></p>
+<p>如果服务器的空间不足了，如何进行扩容？我基本上按照如何重新配置<a target="_blank" rel="noopener" href="https://zhida.zhihu.com/search?content_id=244791150&content_type=Article&match_order=1&q=%E8%99%9A%E6%8B%9F%E7%A3%81%E7%9B%98&zhida_source=entity">虚拟磁盘</a>或添加其他硬盘来进行操作。我的机器上已经有三块硬盘了，组了Raid5，现在再添加一块硬盘。</p>
+<p>先把要添加的硬盘插入服务器，无论是在IDRAC还是管理界面，能看到新添加的硬盘（00:01:06）是Ready状态。</p>
+<p><img src="https://pic4.zhimg.com/v2-74d847d985a527c7ac4b934822840b87_1440w.jpg"></p>
+<p>开机后，首先F2进入System Setup。</p>
+<p>选择设备设置</p>
+<p><img src="https://pica.zhimg.com/v2-dd63aca2f8544abaf00fece6980fd48c_1440w.jpg"></p>
+<p>选择其中的H730Mini</p>
+<p><img src="https://pica.zhimg.com/v2-95fd549595430f1bbf9d0101f71abece_1440w.jpg"></p>
+<p>我们要配置虚拟磁盘，所以选择Virtual Disk</p>
+<p><img src="https://picx.zhimg.com/v2-cbd9bcc690a38041155d7d2a408efca5_1440w.jpg"></p>
+<p>选择这个虚拟磁盘，如果在Background Initialization，可以选择Stop，否则找不到Reconfigure Virtual Disks选项。</p>
+<p><img src="https://pica.zhimg.com/v2-e94dab6bdcc1babbf90abeb5981cd1c2_1440w.jpg"></p>
+<p>选择重新配置虚拟磁盘选项，Go</p>
+<p><img src="https://pic1.zhimg.com/v2-52c1a8655dc0f2755a78d59cca1bf7d8_1440w.jpg"></p>
+<p>选择RAID5，并选择增加新硬盘</p>
+<p><img src="https://pic2.zhimg.com/v2-5c6dded93bcc54698fd7cbca3f0a6c0f_1440w.jpg"></p>
+<p>这里的配置我给忘记了，好像都行，选择完后点击Apply Changes</p>
+<p><img src="https://pic1.zhimg.com/v2-eef84eb142e3624cfe8c334cff61b9b4_1440w.jpg"></p>
+<p><img src="https://pic4.zhimg.com/v2-730418fa1016bd11624a655731a8608b_1440w.jpg"></p>
+<p><img src="https://pic2.zhimg.com/v2-e7eaad359c9c657825ea6777b7534f69_1440w.jpg"></p>
+<p>选择Confirm</p>
+<p><img src="https://picx.zhimg.com/v2-2c53bfbc2a903d230a044201e74a9235_1440w.jpg"></p>
+<p><img src="https://pica.zhimg.com/v2-ee0dba9ff1a4afd063da84722af2d6ee_1440w.jpg"></p>
+<p>然后会跳转回来，选择Start Operation</p>
+<p><img src="https://pic4.zhimg.com/v2-fc43dd669aad403007f704e281fc2385_1440w.jpg"></p>
+<p>提示开始执行了</p>
+<p><img src="https://pic2.zhimg.com/v2-4390d8058038195fa18491f34c492d7f_1440w.jpg"></p>
+<p>当然，如果Start Operation后出现这个不要慌，可能上面哪一步错了，重新来一下</p>
+<p><img src="https://pic3.zhimg.com/v2-2eaf66f807a616d06b0163ff902f06e6_1440w.jpg"></p>
+<p>然后可以看到开始重建了。可以在这个页面等着看进度，直到完成。也可以继续启动操作系统，只不过找不到能看进度的位置了。</p>
+<p><img src="https://picx.zhimg.com/v2-87a1b019354b32c5a761a6c1b390aa03_1440w.jpg"></p>
+<p>在IDRAC也能看到四个磁盘联机了。但是真不知道进度是多少了，啊啊啊啊啊啊</p>
+<p><img src="https://pic2.zhimg.com/v2-3ed732a97f52abaa4886cd027344e0c1_1440w.jpg"></p>
+<p>目前看2T的盘，15~20分钟执行了1%，全搞完得一天左右。</p>
+<p><img src="https://picx.zhimg.com/v2-06238c0325e394f84d3a0c1a2748924f_1440w.jpg"></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-11-26</span><i class="fa fa-tag"></i><a class="tag" href="/tags/扩容/" title="扩容">扩容 </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2020/11/26/【转载】DELL服务器新增硬盘扩容Raid5（System Setup方式）/,Elijah,【转载】DELL服务器新增硬盘扩容Raid5（System Setup方式）,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2021/03/12/%E3%80%90%E7%BD%91%E7%BB%9C%E3%80%91%E5%8D%8E%E4%B8%BA%E4%BA%A4%E6%8D%A2%E6%9C%BA-ACL%E7%AD%96%E7%95%A5%E9%9A%94%E7%A6%BB%E5%90%8Cvlan%E4%B8%8B%E7%9A%84%E4%BA%92%E8%AE%BF/" title="【网络】华为交换机-ACL策略隔离同vlan下的互访">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2020/11/20/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91Linux%20DNS%E5%9F%9F%E5%90%8D%E8%BD%AC%E5%8F%91/" title="【笔记】Linux DNS域名转发">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:true || false, 
+  verify:false|| false, 
+  app_id:'fI99ZhgQcLYvkEn59ArxksxC-gzGzoHsz',
+  app_key:'t54nFvuZ0mPdSIYuMFD5eL39',
+  placeholder:'念念不忘，必有回响...',
+  path: window.location.pathname,
+  serverURLs: '',
+  visitor:true,
+  recordIP:true,
+  avatar:'hide'
+})</script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>【笔记】frp内网穿透工具 · Elijah</title><meta name="description" content="前提条件
+公网服务器
+
+安装frp
+
+github地址：Releases · fatedier&amp;#x2F;frp (github.com)
+
+
+
+服务端部署（公网服务器）vim frps.toml
+12345678910111213141516bindPort = 7000 webServer.ad"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【笔记】frp内网穿透工具</a></h3></div><div class="post-content"><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h3><ul>
+<li><p>公网服务器</p>
+</li>
+<li><p>安装frp</p>
+<ul>
+<li>github地址：<a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">Releases · fatedier&#x2F;frp (</a><a target="_blank" rel="noopener" href="http://github.com/">github.com</a><a target="_blank" rel="noopener" href="https://github.com/fatedier/frp/releases">)</a></li>
+</ul>
+</li>
+</ul>
+<h3 id="服务端部署（公网服务器）"><a href="#服务端部署（公网服务器）" class="headerlink" title="服务端部署（公网服务器）"></a>服务端部署（公网服务器）</h3><p><code>vim frps.toml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">bindPort = 7000</span><br><span class="line"> </span><br><span class="line">webServer.addr = &quot;0.0.0.0&quot;</span><br><span class="line">webServer.port = 7500</span><br><span class="line">webServer.user = &quot;admin&quot;</span><br><span class="line">webServer.password = &quot;admin&quot;</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line">#transport.tls.force = true  # 服务端将只接受 TLS链接</span><br><span class="line">#auth.method = &#x27;token&#x27;       # 客户端访问验证方式</span><br><span class="line">#auth.token = &quot;54321&quot; 		 # 客户端访问验证密码，frpc要与frps一致</span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"># 自定义的监听的端口，所有对服务器该端口访问将被转发到本地内网，做了反向代理可不处理防火墙放行</span><br><span class="line">#vhostHTTPPort = 8000</span><br><span class="line">#vhostHTTPSPort = 45443</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frps -c frps.toml</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>开放端口：</p>
+<ul>
+<li><p>7000（通信使用）</p>
+</li>
+<li><p>7500（web页面）</p>
+</li>
+<li><p>30001（即将被映射的端口）</p>
+</li>
+</ul>
+<p>web页面：http:&#x2F;&#x2F;公网ip:7500</p>
+</blockquote>
+<h3 id="客户端部署（内网服务器）"><a href="#客户端部署（内网服务器）" class="headerlink" title="客户端部署（内网服务器）"></a>客户端部署（内网服务器）</h3><p><code>vim frpc.toml</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">serverAddr = &quot;公网地址&quot;</span><br><span class="line">serverPort = 7000</span><br><span class="line"></span><br><span class="line">[[proxies]]</span><br><span class="line">name = &quot;test-tcp&quot;</span><br><span class="line">type = &quot;tcp&quot;</span><br><span class="line">localIP = &quot;127.0.0.1&quot;</span><br><span class="line">localPort = 8080</span><br><span class="line">remotePort = 30001</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frpc -c frpc.toml</span><br></pre></td></tr></table></figure>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-02-18</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/tags/frp/" title="frp">frp </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2022/02/18/【笔记】frp内网穿透工具/,Elijah,【笔记】frp内网穿透工具,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/04/18/%E3%80%90%E8%99%9A%E6%8B%9F%E5%8C%96%E3%80%91p2p%EF%BC%9AGhost%E5%A4%87%E4%BB%BD%E6%81%A2%E5%A4%8Dwindows%E7%89%A9%E7%90%86%E6%9C%BA/" title="【虚拟化】p2p：Ghost备份恢复windows物理机">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2021/12/20/%E3%80%90%E7%BD%91%E7%BB%9C%E3%80%91H3C-IRF%E5%A0%86%E5%8F%A0+%E6%97%A0%E7%BA%BF%E9%85%8D%E7%BD%AE%EF%BC%88%E5%AE%9E%E9%AA%8C%E7%8E%AF%E5%A2%83%EF%BC%89/" title="【网络】H3C-IRF堆叠+无线配置（实验环境）">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:true || false, 
+  verify:false|| false, 
+  app_id:'fI99ZhgQcLYvkEn59ArxksxC-gzGzoHsz',
+  app_key:'t54nFvuZ0mPdSIYuMFD5eL39',
+  placeholder:'念念不忘，必有回响...',
+  path: window.location.pathname,
+  serverURLs: '',
+  visitor:true,
+  recordIP:true,
+  avatar:'hide'
+})</script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>

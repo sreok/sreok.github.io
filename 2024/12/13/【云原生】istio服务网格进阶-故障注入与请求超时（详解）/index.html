@@ -1,0 +1,88 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>【云原生】istio服务网格进阶-故障注入与请求超时（详解） · Elijah</title><meta name="description" content="官方文档：Istio &amp;#x2F; 故障注入、Istio &amp;#x2F; 设置请求超时
+前提条件：
+
+部署服务（我这里是官方bookinfo程序）
+
+服务注入sidecar
+
+
+部署在这里提到过，原文地址：istio服务网格入门-灰度发布 - (sreok.cn)
+故障注入将请求转发给reviews "><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【云原生】istio服务网格进阶-故障注入与请求超时（详解）</a></h3></div><div class="post-content"><p>官方文档：<a target="_blank" rel="noopener" href="https://istio.io/latest/zh/docs/tasks/traffic-management/fault-injection/"><em>Istio &#x2F; 故障注入</em></a>、<a target="_blank" rel="noopener" href="https://istio.io/latest/zh/docs/tasks/traffic-management/request-timeouts/"><em>Istio &#x2F; 设置请求超时</em></a></p>
+<p>前提条件：</p>
+<ul>
+<li><p>部署服务（我这里是官方bookinfo程序）</p>
+</li>
+<li><p>服务注入sidecar</p>
+</li>
+</ul>
+<p>部署在这里提到过，原文地址：<a target="_blank" rel="noopener" href="https://sreok.cn/archives/1b49e9ee-2a71-4239-913a-fc8913b985b4"><em>istio服务网格入门-灰度发布 - (</em></a><a target="_blank" rel="noopener" href="http://sreok.cn/"><em>sreok.cn</em></a><a target="_blank" rel="noopener" href="https://sreok.cn/archives/1b49e9ee-2a71-4239-913a-fc8913b985b4"><em>)</em></a></p>
+<h2 id="故障注入"><a href="#故障注入" class="headerlink" title="故障注入"></a><strong>故障注入</strong></h2><h3 id="将请求转发给reviews-v2版本"><a href="#将请求转发给reviews-v2版本" class="headerlink" title="将请求转发给reviews v2版本"></a><strong>将请求转发给reviews v2版本</strong></h3><p>只有这个版本才会调用ratings服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt; EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">    - reviews</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v2</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置ratings服务注入延迟"><a href="#设置ratings服务注入延迟" class="headerlink" title="设置ratings服务注入延迟"></a><strong>设置ratings服务注入延迟</strong></h3><p>如果是jason用户的请求，就注入3秒的延迟，比例是100%请求</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt; EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: ratings</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - ratings</span><br><span class="line">  http:</span><br><span class="line">  - match:</span><br><span class="line">    - headers:</span><br><span class="line">        end-user:</span><br><span class="line">          exact: jason</span><br><span class="line">    fault:</span><br><span class="line">      delay:</span><br><span class="line">        fixedDelay: 3s</span><br><span class="line">        percentage:</span><br><span class="line">          value: 100</span><br><span class="line">    route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: ratings</span><br><span class="line">        subset: v1</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: ratings</span><br><span class="line">        subset: v1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-eqtw.png"></p>
+<p>此时请求bookinfo程序，流量被转移到reviews v2版本，没有任何问题</p>
+<p><img src="/images/image-oesh.png"></p>
+<p>当登录用户为jason时，延迟被注入，按照预期，我们引入的3秒延迟不会影响到 <code>reviews</code> 服务，但是因为 <code>reviews</code> 和 <code>ratings</code> 服务间的超时被硬编码为 10 秒。 但是，在 <code>productpage</code> 和 <code>reviews</code> 服务之间也有一个 3 秒的硬编码的超时，再加 1 次重试，一共 6 秒。 结果，<code>productpage</code> 对 <code>reviews</code> 的调用在 6 秒后提前超时并抛出错误了。</p>
+<p>简单来说，productpage在等待reviews，reviews在等待ratings，productpage最多等待3秒就会重试，每次重试都会让reviews 重新请求ratings，所以reviews 与ratings直接的请求<code>必须在3秒内响应</code>，否则就会抛出错误</p>
+<p>可以再次尝试将注入延迟改为2.9秒（只要不超过3秒就会成功，但存在一定误差，这个误差可能时大量请求导致的，我这里是测试，没有其他人的请求，所有可以设置2.9秒）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt; EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: ratings</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - ratings</span><br><span class="line">  http:</span><br><span class="line">  - match:</span><br><span class="line">    - headers:</span><br><span class="line">        end-user:</span><br><span class="line">          exact: jason</span><br><span class="line">    fault:</span><br><span class="line">      delay:</span><br><span class="line">        fixedDelay: 2.9s</span><br><span class="line">        percentage:</span><br><span class="line">          value: 100</span><br><span class="line">    route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: ratings</span><br><span class="line">        subset: v1</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: ratings</span><br><span class="line">        subset: v1</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-qdhw.png"></p>
+<p>这是实际上是官方提供给我们测试的BUG，reviews v3修复了这BUG，将ratings的超时时间设置为2.5秒</p>
+<h3 id="更新reviews"><a href="#更新reviews" class="headerlink" title="更新reviews"></a><strong>更新reviews</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt; EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">    - reviews</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v3</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>此时将流量转发给reviews v3版本，ratings响应时间只要超过2.5秒，reviews就不会继续等待，立即返回给productpage，避免ratings故障影响reviews服务</p>
+<p>延迟如果在2.5秒内，响应没问题，超过2.5秒，抛出异常</p>
+<p>这个时候ratings服务还是设置3s延迟，模拟ratings故障导致无法响应reviews服务，reviews服务也会在2.5秒后，将响应返回给productpage服务，不会影响reviews服务。</p>
+<p><img src="/images/image-dqov.png"></p>
+<h2 id="请求超时"><a href="#请求超时" class="headerlink" title="请求超时"></a><strong>请求超时</strong></h2><p>保留ratings 服务的延迟注入，我设置了3秒，这时设置reviews超时时间</p>
+<h3 id="设置reviews-超时时间"><a href="#设置reviews-超时时间" class="headerlink" title="设置reviews 超时时间"></a><strong>设置reviews 超时时间</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f - &lt;&lt;EOF</span><br><span class="line">apiVersion: networking.istio.io/v1alpha3</span><br><span class="line">kind: VirtualService</span><br><span class="line">metadata:</span><br><span class="line">  name: reviews</span><br><span class="line">spec:</span><br><span class="line">  hosts:</span><br><span class="line">  - reviews</span><br><span class="line">  http:</span><br><span class="line">  - route:</span><br><span class="line">    - destination:</span><br><span class="line">        host: reviews</span><br><span class="line">        subset: v3</span><br><span class="line">    timeout: 1s</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p>过程：</p>
+<p>=&gt; productpage v1（硬编码3s超时，1次重试）</p>
+<p>=&gt; reviews v3（硬编码2.5s超时，设置超时1s，此时会提前超时）</p>
+<p>=&gt; ratings v1（设置延时3s响应，延时只要大于等于超时就会响应失败）</p>
+<p>解析：</p>
+<ol>
+<li><p>productpage请求reviews服务，reviews请求ratings服务，ratings服务延时3s响应</p>
+</li>
+<li><p>1秒后reviews服务超时，因为reviews还在等待reviews响应，而ratings要3s后才会响应</p>
+</li>
+<li><p>productpage因为硬编码会再次重试，还是以上步骤，1秒后reviews服务再次返回超时</p>
+</li>
+<li><p>productpage发送两次请求，共等待了2秒后返回给客户端，并且此时reviews是不可用的</p>
+</li>
+</ol>
+<p>注意：</p>
+<p>productpage硬编码的3s超时没有触发，是因为reviews返回了超时</p>
+<p>reviews硬编码2.5s超时没有触发，是因为设置了超时时间（作用就是这个）</p>
+<p>结果：</p>
+<p>2秒后抛出错误：<code>Sorry, product reviews are currently unavailable for this book.</code></p>
+<p><img src="/images/image-rofb.png"></p>
+<p>原因：</p>
+<p>reviews服务1秒内没有收到ratings服务的响应，reviews服务超时</p>
+<p>这个能解决什么问题？</p>
+<p>在故障注入时，我们发现一个bug，就是调用链的下游超时时间大于上游，此时站在架构层解决的方式就可以使用timeout来拦截流量使下游小于上游的超时时间。避免影响中间层服务。</p>
+<p>注意：</p>
+<ol>
+<li><p>超时时间只能设置小于硬编码的超时时间</p>
+</li>
+<li><p>如遇到上面的bug问题，应及时提交并协助修复，高耦合istio并不是最佳方案</p>
+</li>
+</ol>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2024-12-13</span><i class="fa fa-tag"></i><a class="tag" href="/tags/istio/" title="istio">istio </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2024/12/13/【云原生】istio服务网格进阶-故障注入与请求超时（详解）/,Elijah,【云原生】istio服务网格进阶-故障注入与请求超时（详解）,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2024/12/27/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91K8sGPT%20+%20LocalAI%20%E5%BC%80%E6%BA%90%E8%87%AA%E5%8A%A8%E5%8C%96%E8%AF%8A%E6%96%AD%E5%B7%A5%E5%85%B7%EF%BC%88GPT4All-j%E6%A8%A1%E5%9E%8B%EF%BC%89/" title="【云原生】K8sGPT + LocalAI 开源自动化诊断工具（GPT4All-j模型）">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2024/12/11/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91istio%E6%9C%8D%E5%8A%A1%E7%BD%91%E6%A0%BC%E5%85%A5%E9%97%A8-%E7%81%B0%E5%BA%A6%E5%8F%91%E5%B8%83/" title="【云原生】istio服务网格入门-灰度发布">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:true || false, 
+  verify:false|| false, 
+  app_id:'fI99ZhgQcLYvkEn59ArxksxC-gzGzoHsz',
+  app_key:'t54nFvuZ0mPdSIYuMFD5eL39',
+  placeholder:'念念不忘，必有回响...',
+  path: window.location.pathname,
+  serverURLs: '',
+  visitor:true,
+  recordIP:true,
+  avatar:'hide'
+})</script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>

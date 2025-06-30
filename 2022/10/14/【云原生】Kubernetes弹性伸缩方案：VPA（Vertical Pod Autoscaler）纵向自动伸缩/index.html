@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>【云原生】Kubernetes弹性伸缩方案：VPA（Vertical Pod Autoscaler）纵向自动伸缩 · Elijah</title><meta name="description" content="前提条件
+Kubernetes &amp;gt;&amp;#x3D; 1.25
+
+Openssl &amp;gt;&amp;#x3D; 1.1.1
+
+部署MetricServer
+
+
+官方地址：自动扩缩工作负载 | Kubernetes
+官方Github：autoscaler&amp;#x2F;vertical-pod-autoscale"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【云原生】Kubernetes弹性伸缩方案：VPA（Vertical Pod Autoscaler）纵向自动伸缩</a></h3></div><div class="post-content"><h3 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a><strong>前提条件</strong></h3><ul>
+<li><p>Kubernetes &gt;&#x3D; 1.25</p>
+</li>
+<li><p>Openssl &gt;&#x3D; 1.1.1</p>
+</li>
+<li><p>部署MetricServer</p>
+</li>
+</ul>
+<p>官方地址：<a target="_blank" rel="noopener" href="https://kubernetes.io/zh-cn/docs/concepts/workloads/autoscaling/#scaling-workloads-vertically">自动扩缩工作负载 | Kubernetes</a></p>
+<p>官方Github：<a target="_blank" rel="noopener" href="https://github.com/kubernetes/autoscaler/tree/vertical-pod-autoscaler-1.1.2/vertical-pod-autoscaler">autoscaler&#x2F;vertical-pod-autoscaler at vertical-pod-autoscaler-1.1.2 · kubernetes&#x2F;autoscaler · GitHub</a></p>
+<h3 id="部署VPA（v1-1-2）"><a href="#部署VPA（v1-1-2）" class="headerlink" title="部署VPA（v1.1.2）"></a><strong>部署VPA（v1.1.2）</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git clone https://github.com/kubernetes/autoscaler.git -b vertical-pod-autoscaler-1.1.2</span><br><span class="line">cd autoscaler/vertical-pod-autoscaler/hack</span><br><span class="line">./vpa-up.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="已知问题"><a href="#已知问题" class="headerlink" title="已知问题"></a><strong>已知问题</strong></h4><p><code>ERROR: Failed to create CA certificate for self-signing. If the error is &quot;unknown option -addext&quot;, update your openssl version or deploy VPA from the vpa-release-0.8 branch.</code></p>
+<p>原因：openssl 版本太低</p>
+<p>解决方法：执行<code>vpa-down.sh</code>卸载后，升级openssl，重新安装</p>
+<h3 id="升级openssl（部署机升级即可）"><a href="#升级openssl（部署机升级即可）" class="headerlink" title="升级openssl（部署机升级即可）"></a><strong>升级openssl（部署机升级即可）</strong></h3><p>查看当前版本</p>
+<p><img src="/images/image-asik.png"></p>
+<p>下载地址（最新稳定版3.3，支持到2026.4.9）：<a target="_blank" rel="noopener" href="https://www.openssl.org/source/openssl-3.3.1.tar.gz">openssl-3.3.1.tar.gz</a></p>
+<h4 id="备份"><a href="#备份" class="headerlink" title="备份"></a><strong>备份</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mv /usr/bin/openssl /usr/bin/openssl.bak</span><br><span class="line">mv /usr/include/openssl /usr/include/openssl.bak</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装依赖"><a href="#安装依赖" class="headerlink" title="安装依赖"></a><strong>安装依赖</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install perl-IPC-Cmd perl-ExtUtils-MakeMaker perl-Data-Dumper</span><br></pre></td></tr></table></figure>
+
+<h4 id="编译"><a href="#编译" class="headerlink" title="编译"></a><strong>编译</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf openssl-3.3.1.tar.gz</span><br><span class="line">cd openssl-3.3.1/</span><br><span class="line">./config shared --openssldir=/usr/local/openssl --prefix=/usr/local/openssl</span><br><span class="line">make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+
+<h4 id="软连接"><a href="#软连接" class="headerlink" title="软连接"></a><strong>软连接</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ln -s /usr/local/openssl/lib/libssl.so.3 /usr/lib/libssl.so.3</span><br><span class="line">ln -s /usr/local/openssl/lib64/libssl.so.3 /usr/lib64/libssl.so.3</span><br><span class="line">ln -s /usr/local/openssl/lib/libcrypto.so.3 /usr/lib/libcrypto.so.3</span><br><span class="line">ln -s /usr/local/openssl/lib64/libcrypto.so.3 /usr/lib64/libcrypto.so.3</span><br><span class="line">​</span><br><span class="line">ln -s /usr/local/openssl/bin/openssl /usr/bin/openssl</span><br><span class="line">ln -s /usr/local/openssl/include/openssl /usr/include/openssl</span><br><span class="line">echo “/usr/local/openssl/lib” &gt;&gt; /etc/ld.so.conf</span><br><span class="line">ldconfig -v</span><br></pre></td></tr></table></figure>
+
+<p>查看版本</p>
+<p><img src="/images/image-qzgf.png"></p>
+<h3 id="测试VPA"><a href="#测试VPA" class="headerlink" title="测试VPA"></a><strong>测试VPA</strong></h3><h4 id="创建Deployment"><a href="#创建Deployment" class="headerlink" title="创建Deployment"></a><strong>创建Deployment</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; apache.yaml &lt;&lt; EOF</span><br><span class="line">apiVersion: apps/v1</span><br><span class="line">kind: Deployment</span><br><span class="line">metadata:</span><br><span class="line">  name: apache</span><br><span class="line">spec:</span><br><span class="line">  replicas: 3</span><br><span class="line">  selector:</span><br><span class="line">    matchLabels:</span><br><span class="line">      run: apache</span><br><span class="line">  template:</span><br><span class="line">    metadata:</span><br><span class="line">      labels:</span><br><span class="line">        run: apache</span><br><span class="line">    spec:</span><br><span class="line">      containers:</span><br><span class="line">      - name: apache</span><br><span class="line">        image: registry.k8s.io/hpa-example</span><br><span class="line">        ports:</span><br><span class="line">        - containerPort: 80</span><br><span class="line">---</span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Service</span><br><span class="line">metadata:</span><br><span class="line">  name: apache</span><br><span class="line">  labels:</span><br><span class="line">    run: apache</span><br><span class="line">spec:</span><br><span class="line">  ports:</span><br><span class="line">  - port: 80</span><br><span class="line">  selector:</span><br><span class="line">    run: apache</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f apache.yaml</span><br></pre></td></tr></table></figure>
+
+<p>查看当前pod资源</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod &lt;podname&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-vjja.png"></p>
+<blockquote>
+<p>没有限制，所以没有Limits和Requests</p>
+</blockquote>
+<h4 id="创建VPA"><a href="#创建VPA" class="headerlink" title="创建VPA"></a><strong>创建VPA</strong></h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">cat &gt; vpa-apache.yaml &lt;&lt; EOF </span><br><span class="line">apiVersion: autoscaling.k8s.io/v1 </span><br><span class="line">kind: VerticalPodAutoscaler </span><br><span class="line">metadata: </span><br><span class="line">  name: apache-deployment-basic-vpa   </span><br><span class="line">namespace: default </span><br><span class="line">spec: </span><br><span class="line">  targetRef: </span><br><span class="line">    apiVersion: &quot;apps/v1&quot; </span><br><span class="line">    kind:       Deployment </span><br><span class="line">    name:       apache </span><br><span class="line">  updatePolicy: </span><br><span class="line">    updateMode: &quot;Auto&quot; </span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-fpfd.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl apply -f vpa-apache.yaml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># 需要等待两分钟，才能返回结果</span><br><span class="line">kubectl get vpa</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-shot.png"></p>
+<p><img src="/images/image-clym.png"></p>
+<blockquote>
+<p>pod会根据推荐资源配置，重新分配</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe vpa apache-deployment-basic-vpa</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-tiyv.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl describe pod &lt;podname&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-fslq.png"></p>
+<blockquote>
+<p>vpa与重新创建的pod资源对应</p>
+</blockquote>
+<h3 id="增加负载"><a href="#增加负载" class="headerlink" title="增加负载"></a><strong>增加负载</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install httpd-tools</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ab -c 100 -n 500000 http://10.20.13.140:29704/</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/image-noje.png"></p>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2022-10-14</span><i class="fa fa-tag"></i><a class="tag" href="/categories/云原生/" title="云原生">云原生 </a><a class="tag" href="/tags/Kubernetes/" title="Kubernetes">Kubernetes </a><a class="tag" href="/tags/VPA/" title="VPA">VPA </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2022/10/14/【云原生】Kubernetes弹性伸缩方案：VPA（Vertical Pod Autoscaler）纵向自动伸缩/,Elijah,【云原生】Kubernetes弹性伸缩方案：VPA（Vertical Pod Autoscaler）纵向自动伸缩,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2022/11/30/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E6%B5%AA%E6%BD%AE%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85NVIDIA%20Tesla%20T4%E6%98%BE%E5%8D%A1/" title="【笔记】浪潮服务器安装NVIDIA Tesla T4显卡">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2022/10/11/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91Kubernetes%E5%BC%B9%E6%80%A7%E4%BC%B8%E7%BC%A9%E6%96%B9%E6%A1%88%EF%BC%9AHPA%EF%BC%88Horizontal%20Pod%20Autoscaler%EF%BC%89%E6%A8%AA%E5%90%91%E8%87%AA%E5%8A%A8%E4%BC%B8%E7%BC%A9/" title="【云原生】Kubernetes弹性伸缩方案：HPA（Horizontal Pod Autoscaler）横向自动伸缩">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+  el:'#vcomments',
+  notify:true || false, 
+  verify:false|| false, 
+  app_id:'fI99ZhgQcLYvkEn59ArxksxC-gzGzoHsz',
+  app_key:'t54nFvuZ0mPdSIYuMFD5eL39',
+  placeholder:'念念不忘，必有回响...',
+  path: window.location.pathname,
+  serverURLs: '',
+  visitor:true,
+  recordIP:true,
+  avatar:'hide'
+})</script></div></div></div></div><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>
