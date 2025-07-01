@@ -1,0 +1,118 @@
+/* 搜索按钮样式 */
+.page-top .information .search_btn {
+  float: left;
+  padding-top: 5px;
+}
+.page-top .information .search_btn li {
+  display: initial;
+  font-size: 20px;
+  padding-right: 20px;
+}
+.hidden {
+  display: none;
+}
+#search-button{
+    cursor: pointer;
+}
+#search-popup {
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    max-width: 90vw;
+    min-width: 240px;
+    height: auto;
+    min-height: 200px;
+    padding: 32px 24px 24px 24px;
+    border: none;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    text-align: left;
+    z-index: 100;
+    box-sizing: border-box;
+}
+
+#search-popup input[type="text"] {
+    display: block;
+}
+#search-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%;
+    width: 100%;
+}
+
+#local-search-input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 1.1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    outline: none;
+    transition: border 0.2s;
+    margin-bottom: 1rem;
+    box-sizing: border-box;
+}
+#local-search-input:focus {
+    border: 1.5px solid #4088b8;
+}
+
+#local-search-results {
+    overflow-y: auto;
+    max-height: 300px;
+    flex-grow: 1;
+    padding-right: 4px;
+}
+
+
+ul.search-result-list {
+    padding-left: 0;
+    margin: 0;
+    list-style: none;
+}
+a.search-result-title {
+    font-weight: bold;
+    color: #4088b8;
+    text-decoration: none;
+    font-size: 1.05rem;
+}
+a.search-result-title:hover {
+    text-decoration: underline;
+}
+p.search-result {
+    color: #555;
+    font-size: 0.95rem;
+    margin: 4px 0 12px 0;
+}
+
+em.search-keyword {
+    border-bottom: 1px dashed #4088b8;
+    font-weight: bold;
+    color: #d2691e;
+    background: #f3f8ff;
+    padding: 0 2px;
+    border-radius: 2px;
+}
+
+.search-empty-tip {
+    color: #aaa;
+    text-align: center;
+    padding: 32px 0;
+    font-size: 1rem;
+}
+
+/* 响应式优化：小屏幕下弹窗宽度自适应 */
+@media (max-width: 500px) {
+    #search-popup {
+        width: 96vw;
+        min-width: 0;
+        padding: 16px 6vw 16px 6vw;
+    }
+    #local-search-input {
+        font-size: 1rem;
+        padding: 10px 8px;
+    }
+}

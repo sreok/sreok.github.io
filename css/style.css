@@ -135,7 +135,7 @@ a:hover, a:active {
 }
 .page-top .nav {
   list-style: none;
-  padding: 18px 30px;
+  padding: 18px 10px;
   float: left;
   font-size: 14px;
 }
@@ -157,8 +157,8 @@ a:hover, a:active {
 }
 .page-top .information {
   float: right;
-  padding-top: 12px;
-  padding-right: 20px;
+  padding-top: 18px;
+  padding-right: 15px;
 }
 .page-top .information .avatar {
   float: right;
@@ -171,22 +171,10 @@ a:hover, a:active {
 .page-top .information .back_btn {
   float: left;
   padding-top: 5px;
-  margin-right: -10px;
 }
 .page-top .information .back_btn li {
   display: initial;
-  padding-right: 40px;
-}
-/* 搜索按钮样式 */
-.page-top .information .search_btn {
-  float: left;
-  padding-top: 5px;
-  margin-right: -10px;
-}
-.page-top .information .search_btn li {
-  display: initial;
-  padding-right: 40px;
-  font-size: 20px;
+  padding-right: 20px;
 }
 
 
