@@ -1,0 +1,79 @@
+.friend-links {
+    list-style: none;
+    padding: 0;
+    margin: 32px 0 0 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.friend-links li {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 16px 28px;
+    min-width: 260px;
+    max-width: 360px;
+    transition: box-shadow 0.2s;
+}
+
+.friend-links li:hover {
+    box-shadow: 0 4px 16px rgba(64,136,184,0.12);
+    background: #f0f6fa;
+}
+
+.friend-links img {
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border: 2px solid #e0e0e0;
+    background: #fff;
+}
+
+.friend-links a {
+    font-weight: bold;
+    color: #4088b8;
+    text-decoration: none;
+    font-size: 1.08rem;
+    margin-right: 8px;
+    transition: color 0.2s;
+}
+
+.friend-links a:hover {
+    color: #d2691e;
+    text-decoration: underline;
+}
+
+.friend-links span {
+    color: #888;
+    font-size: 0.98em;
+    margin-left: 4px;
+    word-break: break-all;
+}
+
+.links-wrpper{
+    padding: 0 30px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* 响应式支持 */
+@media (max-width: 600px) {
+    .friend-links {
+        flex-direction: column;
+        gap: 16px;
+    }
+    .friend-links li {
+        max-width: 100%;
+        min-width: 0;
+        padding: 12px 10px;
+    }
+    .friend-links img {
+        width: 40px;
+        height: 40px;
+    }
+}
