@@ -22,7 +22,7 @@ p {
 a {
   text-decoration: none;
 }
- 
+
 /* 圆形头像 */
 .title img {
   max-width: 100%;
@@ -204,7 +204,7 @@ a:hover, a:active {
   margin: 0 auto;
 }
 .sidebar .logo-title .title h3 {
-  text-transform: uppercase;
+  /* text-transform: uppercase; */
   font-size: 2rem;
   font-weight: bold;
   letter-spacing: 2px;
@@ -381,11 +381,25 @@ a:hover, a:active {
 .pagination ul li a {
   text-decoration: none;
 }
-.pagination .pre {
-  float: left;
+.pagination ul.clearfix {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.pagination .pre{
+  flex: 1;
+  text-align: left;
 }
 .pagination .next {
-  float: right;
+    flex: 1;
+    text-align: right;
+}
+
+.page-info.pagbuttons {
+    flex: 0 0 auto;
+    text-align: center;
+    font-size: 1.1em;
 }
 
 .like-reblog-buttons {
@@ -682,45 +696,4 @@ a.btn {
 .page_404 {
   text-align: center;
   padding-top: 50px;
-}
-
-@media screen and (max-width: 960px) {
-  .sidebar {
-    width: 100%;
-    position: absolute;
-    border-right: none;
-    z-index: 1;
-  }
-  .sidebar .logo-title {
-    padding-top: 120px;
-  }
-  .sidebar .logo-title .title img {
-    width: 100px;
-  }
-  .sidebar .logo-title .title h3 {
-    font-size: 20px;
-  }
-
-  .page-top {
-    width: 100%;
-  }
-
-  .post-title h3 {
-    line-height: 1.6;
-  }
-
-  .content {
-    margin-top: 420px;
-    width: 100%;
-    z-index: 2;
-    position: absolute;
-  }
-
-  .footer {
-    display: none;
-  }
-
-  .share {
-    display: grid;
-  }
 }
