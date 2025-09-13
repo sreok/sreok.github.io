@@ -7,7 +7,111 @@ alertmanager
 
 创建告警机器人创建群聊
 添加机器人
-配置安全设置为加签，并记录Webhook和"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【监控】prometheus通过alertmanager集成钉钉告警</a></h3></div><div class="post-content"><h1 id="prometheus通过alertmanager集成钉钉告警"><a href="#prometheus通过alertmanager集成钉钉告警" class="headerlink" title="prometheus通过alertmanager集成钉钉告警"></a>prometheus通过alertmanager集成钉钉告警</h1><p>下载二进制包：<a target="_blank" rel="noopener" href="https://prometheus.io/download/">Download | Prometheus</a></p>
+配置安全设置为加签，并记录Webhook和"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
+$(document).ready(function() {
+  // 为所有代码块添加复制按钮
+  $('.highlight').each(function() {
+    // 获取当前代码块元素
+    const $highlightBlock = $(this);
+    
+    // 创建复制按钮
+    const $copyBtn = $('<button class="copy-button">复制</button>');
+    
+    // 设置按钮样式
+    $copyBtn.css({
+      'position': 'absolute',
+      'top': '10px',
+      'right': '10px',
+      'z-index': '10',
+      'background': '#4b5263',
+      'color': '#abb2bf',
+      'border': 'none',
+      'border-radius': '4px',
+      'padding': '6px 12px',
+      'font-size': '12px',
+      'cursor': 'pointer',
+      'transition': 'all 0.3s ease'
+    });
+    
+    // 鼠标悬停效果
+    $copyBtn.hover(
+      function() { $(this).css({ 'background': '#5c6370', 'color': '#e6e6e6' }); },
+      function() { $(this).css({ 'background': '#4b5263', 'color': '#abb2bf' }); }
+    );
+    
+    // 将按钮添加到代码块容器
+    $highlightBlock.append($copyBtn);
+    
+    // 添加复制按钮的点击事件
+    $copyBtn.on('click', async function() {
+      try {
+        // 尝试获取代码内容 (兼容不同的代码块结构)
+        let codeContent = '';
+        const $codeElement = $highlightBlock.find('td.code pre');
+        
+        if ($codeElement.length) {
+          codeContent = $codeElement.text();
+        } else {
+          // 备用选择器，以防结构不同
+          codeContent = $highlightBlock.find('pre').text() || '';
+        }
+        
+        if (!codeContent) {
+          throw new Error('未找到代码内容');
+        }
+        
+        // 使用现代的 Clipboard API 执行复制
+        if (navigator.clipboard && window.isSecureContext) {
+          // 首选：现代安全上下文
+          await navigator.clipboard.writeText(codeContent);
+        } else {
+          // 降级方案：传统方法
+          const textArea = document.createElement('textarea');
+          textArea.value = codeContent;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (!successful) throw new Error('execCommand failed');
+          } finally {
+            document.body.removeChild(textArea);
+          }
+        }
+        
+        // 显示复制成功反馈
+        const originalText = $copyBtn.text();
+        $copyBtn.text('已复制！');
+        $copyBtn.addClass('copied');
+        $copyBtn.css({ 'background': '#10b981', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text(originalText);
+          $copyBtn.removeClass('copied');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+      } catch (err) {
+        // 显示复制失败反馈
+        $copyBtn.text('复制失败');
+        $copyBtn.css({ 'background': '#ef4444', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text('复制');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+        console.error('复制失败:', err);
+      }
+    });
+  });
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><!-- 汉堡菜单按钮 - 仅在移动设备显示--><div class="mobile-menu-btn"><i class="fa fa-bars"></i></div><!-- 移动设备菜单 - 默认隐藏--><div class="mobile-menu"><div class="nav mobile-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 移动端信息区域 - 移除了头像和搜索按钮，因为它们现在始终显示在导航栏右上角--><div class="mobile-information"><!-- 保留空的信息区域以便保持菜单结构一致--><div></div></div></div><!-- 桌面端导航 - 默认显示--><div class="nav desktop-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 桌面端信息区域--><div class="information desktop-information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【监控】prometheus通过alertmanager集成钉钉告警</a></h3></div><div class="post-content"><h1 id="prometheus通过alertmanager集成钉钉告警"><a href="#prometheus通过alertmanager集成钉钉告警" class="headerlink" title="prometheus通过alertmanager集成钉钉告警"></a>prometheus通过alertmanager集成钉钉告警</h1><p>下载二进制包：<a target="_blank" rel="noopener" href="https://prometheus.io/download/">Download | Prometheus</a></p>
 <h2 id="前提条件"><a href="#前提条件" class="headerlink" title="前提条件"></a>前提条件</h2><ul>
 <li>Prometheus</li>
 <li>alertmanager</li>
@@ -48,7 +152,7 @@ alertmanager
 
 <p>稍等一下，收到</p>
 <p><img src="/images/image-tkco.png" alt="image-20240419140237250"></p>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-07-02</span><i class="fa fa-tag"></i><a class="tag" href="/categories/监控/" title="监控">监控 </a><a class="tag" href="/tags/prometheus/" title="prometheus">prometheus </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2023/07/02/【监控】prometheus通过alertmanager集成钉钉告警/,Elijah,【监控】prometheus通过alertmanager集成钉钉告警,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/07/10/%E3%80%90%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E3%80%91kube-vip%20%E4%B8%8E%20MetalLB%20LoadBalancer%20Layer2%20ARP%E5%86%B2%E7%AA%81/" title="【故障排查】kube-vip 与 MetalLB LoadBalancer Layer2 ARP冲突">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/06/04/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8kube-vip%E5%AE%9E%E7%8E%B0LoadBalancer%EF%BC%88Layer2%E6%A8%A1%E5%BC%8F%EF%BC%89/" title="【笔记】使用kube-vip实现LoadBalancer（Layer2模式）">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2023-07-02</span><i class="fa fa-tag"></i><a class="tag" href="/categories/监控/" title="监控">监控 </a><a class="tag" href="/tags/prometheus/" title="prometheus">prometheus </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.cn/2023/07/02/【监控】prometheus通过alertmanager集成钉钉告警/,Elijah,【监控】prometheus通过alertmanager集成钉钉告警,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2023/07/10/%E3%80%90%E6%95%85%E9%9A%9C%E6%8E%92%E6%9F%A5%E3%80%91kube-vip%20%E4%B8%8E%20MetalLB%20LoadBalancer%20Layer2%20ARP%E5%86%B2%E7%AA%81/" title="【故障排查】kube-vip 与 MetalLB LoadBalancer Layer2 ARP冲突">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2023/06/04/%E3%80%90%E7%AC%94%E8%AE%B0%E3%80%91%E4%BD%BF%E7%94%A8kube-vip%E5%AE%9E%E7%8E%B0LoadBalancer%EF%BC%88Layer2%E6%A8%A1%E5%BC%8F%EF%BC%89/" title="【笔记】使用kube-vip实现LoadBalancer（Layer2模式）">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
   el:'#vcomments',
   notify:true || false, 
   verify:false|| false, 

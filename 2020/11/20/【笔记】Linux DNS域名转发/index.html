@@ -2,7 +2,111 @@
 
 dns转发器配置1vim /etc/named.conf
 
-123456789101112131415161718192021222324252627282930313233343536// 定义一个ACL（访问控制列表），用于"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【笔记】Linux DNS域名转发</a></h3></div><div class="post-content"><h3 id="安装bind"><a href="#安装bind" class="headerlink" title="安装bind"></a>安装bind</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install bind bind-utils</span><br></pre></td></tr></table></figure>
+123456789101112131415161718192021222324252627282930313233343536// 定义一个ACL（访问控制列表），用于"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
+$(document).ready(function() {
+  // 为所有代码块添加复制按钮
+  $('.highlight').each(function() {
+    // 获取当前代码块元素
+    const $highlightBlock = $(this);
+    
+    // 创建复制按钮
+    const $copyBtn = $('<button class="copy-button">复制</button>');
+    
+    // 设置按钮样式
+    $copyBtn.css({
+      'position': 'absolute',
+      'top': '10px',
+      'right': '10px',
+      'z-index': '10',
+      'background': '#4b5263',
+      'color': '#abb2bf',
+      'border': 'none',
+      'border-radius': '4px',
+      'padding': '6px 12px',
+      'font-size': '12px',
+      'cursor': 'pointer',
+      'transition': 'all 0.3s ease'
+    });
+    
+    // 鼠标悬停效果
+    $copyBtn.hover(
+      function() { $(this).css({ 'background': '#5c6370', 'color': '#e6e6e6' }); },
+      function() { $(this).css({ 'background': '#4b5263', 'color': '#abb2bf' }); }
+    );
+    
+    // 将按钮添加到代码块容器
+    $highlightBlock.append($copyBtn);
+    
+    // 添加复制按钮的点击事件
+    $copyBtn.on('click', async function() {
+      try {
+        // 尝试获取代码内容 (兼容不同的代码块结构)
+        let codeContent = '';
+        const $codeElement = $highlightBlock.find('td.code pre');
+        
+        if ($codeElement.length) {
+          codeContent = $codeElement.text();
+        } else {
+          // 备用选择器，以防结构不同
+          codeContent = $highlightBlock.find('pre').text() || '';
+        }
+        
+        if (!codeContent) {
+          throw new Error('未找到代码内容');
+        }
+        
+        // 使用现代的 Clipboard API 执行复制
+        if (navigator.clipboard && window.isSecureContext) {
+          // 首选：现代安全上下文
+          await navigator.clipboard.writeText(codeContent);
+        } else {
+          // 降级方案：传统方法
+          const textArea = document.createElement('textarea');
+          textArea.value = codeContent;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (!successful) throw new Error('execCommand failed');
+          } finally {
+            document.body.removeChild(textArea);
+          }
+        }
+        
+        // 显示复制成功反馈
+        const originalText = $copyBtn.text();
+        $copyBtn.text('已复制！');
+        $copyBtn.addClass('copied');
+        $copyBtn.css({ 'background': '#10b981', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text(originalText);
+          $copyBtn.removeClass('copied');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+      } catch (err) {
+        // 显示复制失败反馈
+        $copyBtn.text('复制失败');
+        $copyBtn.css({ 'background': '#ef4444', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text('复制');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+        console.error('复制失败:', err);
+      }
+    });
+  });
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><!-- 汉堡菜单按钮 - 仅在移动设备显示--><div class="mobile-menu-btn"><i class="fa fa-bars"></i></div><!-- 移动设备菜单 - 默认隐藏--><div class="mobile-menu"><div class="nav mobile-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 移动端信息区域 - 移除了头像和搜索按钮，因为它们现在始终显示在导航栏右上角--><div class="mobile-information"><!-- 保留空的信息区域以便保持菜单结构一致--><div></div></div></div><!-- 桌面端导航 - 默认显示--><div class="nav desktop-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 桌面端信息区域--><div class="information desktop-information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【笔记】Linux DNS域名转发</a></h3></div><div class="post-content"><h3 id="安装bind"><a href="#安装bind" class="headerlink" title="安装bind"></a>安装bind</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dnf install bind bind-utils</span><br></pre></td></tr></table></figure>
 
 <h3 id="dns转发器配置"><a href="#dns转发器配置" class="headerlink" title="dns转发器配置"></a>dns转发器配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/named.conf</span><br></pre></td></tr></table></figure>
 
@@ -11,7 +115,7 @@ dns转发器配置1vim /etc/named.conf
 <h3 id="dns解析配置"><a href="#dns解析配置" class="headerlink" title="dns解析配置"></a>dns解析配置</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/named.conf</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">options &#123;</span><br><span class="line">    // 设置DNS服务器监听IPv4和IPv6的所有地址上的53号端口</span><br><span class="line">    listen-on port 53 &#123; any; &#125;;</span><br><span class="line">    listen-on-v6 port 53 &#123; any; &#125;;</span><br><span class="line">    // 指定BIND工作目录，用于存放所有BIND相关的文件</span><br><span class="line">    directory 	&quot;/var/named&quot;;</span><br><span class="line">    // 设置缓存数据转储文件的路径</span><br><span class="line">    dump-file 	&quot;/var/named/data/cache_dump.db&quot;;</span><br><span class="line">    // 设置统计信息文件的路径</span><br><span class="line">    statistics-file &quot;/var/named/data/named_stats.txt&quot;;</span><br><span class="line">    // 设置内存使用统计文件的路径</span><br><span class="line">    memstatistics-file &quot;/var/named/data/named_mem_stats.txt&quot;;</span><br><span class="line">    // 设置记录递归查询的文件路径</span><br><span class="line">    recursing-file  &quot;/var/named/data/named.recursing&quot;;</span><br><span class="line">    // 设置信任锚点文件的路径</span><br><span class="line">    secroots-file   &quot;/var/named/data/named.secroots&quot;;</span><br><span class="line">    // 允许所有IP地址进行查询</span><br><span class="line">    allow-query     &#123; any; &#125;;</span><br><span class="line">    // 开启递归查询功能</span><br><span class="line">    recursion yes;</span><br><span class="line">    // 开启DNSSEC功能</span><br><span class="line">    dnssec-enable yes;</span><br><span class="line">    // 开启DNSSEC验证</span><br><span class="line">    dnssec-validation yes;</span><br><span class="line">    // 指定ISC DLV（DNSSEC Lookaside Validation）密钥文件的路径</span><br><span class="line">    bindkeys-file &quot;/etc/named.root.key&quot;;</span><br><span class="line">    // 指定动态更新密钥的目录</span><br><span class="line">    managed-keys-directory &quot;/var/named/dynamic&quot;;</span><br><span class="line">    // 设置BIND进程的PID文件路径</span><br><span class="line">    pid-file &quot;/run/named/named.pid&quot;;</span><br><span class="line">    // 设置BIND会话密钥文件的路径</span><br><span class="line">    session-keyfile &quot;/run/named/session.key&quot;;</span><br><span class="line">&#125;;</span><br><span class="line">logging &#123;</span><br><span class="line">    // 设置日志记录的通道</span><br><span class="line">    channel default_debug &#123;</span><br><span class="line">            // 设置日志文件的路径</span><br><span class="line">            file &quot;data/named.run&quot;;</span><br><span class="line"></span><br><span class="line">            // 设置日志级别为动态，根据运行时的配置调整</span><br><span class="line">            severity dynamic;</span><br><span class="line">    &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">zone &quot;.&quot; IN &#123;</span><br><span class="line">    // 定义根区域（&quot;.&quot;代表根），使用&quot;hint&quot;类型，通常用于指定根服务器的地址</span><br><span class="line">    type hint;</span><br><span class="line">    // 指定根区域文件的路径</span><br><span class="line">    file &quot;named.ca&quot;;</span><br><span class="line">&#125;;</span><br><span class="line">// 包含扩展的区域配置文件，通常包含正向和反向查找区域的定义</span><br><span class="line">include &quot;/etc/named.rfc1912.zones&quot;;</span><br><span class="line">// 包含根密钥文件的配置，用于DNSSEC</span><br><span class="line">include &quot;/etc/named.root.key&quot;;</span><br></pre></td></tr></table></figure>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-11-20</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/tags/dns/" title="dns">dns </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2020/11/20/【笔记】Linux DNS域名转发/,Elijah,【笔记】Linux DNS域名转发,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2020/11/26/%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91DELL%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B0%E5%A2%9E%E7%A1%AC%E7%9B%98%E6%89%A9%E5%AE%B9Raid5%EF%BC%88System%20Setup%E6%96%B9%E5%BC%8F%EF%BC%89/" title="【转载】DELL服务器新增硬盘扩容Raid5（System Setup方式）">上一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2020-11-20</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/tags/dns/" title="dns">dns </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.cn/2020/11/20/【笔记】Linux DNS域名转发/,Elijah,【笔记】Linux DNS域名转发,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2020/11/26/%E3%80%90%E8%BD%AC%E8%BD%BD%E3%80%91DELL%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B0%E5%A2%9E%E7%A1%AC%E7%9B%98%E6%89%A9%E5%AE%B9Raid5%EF%BC%88System%20Setup%E6%96%B9%E5%BC%8F%EF%BC%89/" title="【转载】DELL服务器新增硬盘扩容Raid5（System Setup方式）">上一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
   el:'#vcomments',
   notify:true || false, 
   verify:false|| false, 

@@ -2,7 +2,111 @@
 Node.js：https://nodejs.org/zh-cn
 Git：https://git-scm.com/downloads
 
-链接Github12git config --global user.name &amp;quot;GitHub 用户名&amp;quot;git config --gl"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【笔记】基于github Page创建hexo个人博客</a></h3></div><div class="post-content"><h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><ul>
+链接Github12git config --global user.name &amp;quot;GitHub 用户名&amp;quot;git config --gl"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
+$(document).ready(function() {
+  // 为所有代码块添加复制按钮
+  $('.highlight').each(function() {
+    // 获取当前代码块元素
+    const $highlightBlock = $(this);
+    
+    // 创建复制按钮
+    const $copyBtn = $('<button class="copy-button">复制</button>');
+    
+    // 设置按钮样式
+    $copyBtn.css({
+      'position': 'absolute',
+      'top': '10px',
+      'right': '10px',
+      'z-index': '10',
+      'background': '#4b5263',
+      'color': '#abb2bf',
+      'border': 'none',
+      'border-radius': '4px',
+      'padding': '6px 12px',
+      'font-size': '12px',
+      'cursor': 'pointer',
+      'transition': 'all 0.3s ease'
+    });
+    
+    // 鼠标悬停效果
+    $copyBtn.hover(
+      function() { $(this).css({ 'background': '#5c6370', 'color': '#e6e6e6' }); },
+      function() { $(this).css({ 'background': '#4b5263', 'color': '#abb2bf' }); }
+    );
+    
+    // 将按钮添加到代码块容器
+    $highlightBlock.append($copyBtn);
+    
+    // 添加复制按钮的点击事件
+    $copyBtn.on('click', async function() {
+      try {
+        // 尝试获取代码内容 (兼容不同的代码块结构)
+        let codeContent = '';
+        const $codeElement = $highlightBlock.find('td.code pre');
+        
+        if ($codeElement.length) {
+          codeContent = $codeElement.text();
+        } else {
+          // 备用选择器，以防结构不同
+          codeContent = $highlightBlock.find('pre').text() || '';
+        }
+        
+        if (!codeContent) {
+          throw new Error('未找到代码内容');
+        }
+        
+        // 使用现代的 Clipboard API 执行复制
+        if (navigator.clipboard && window.isSecureContext) {
+          // 首选：现代安全上下文
+          await navigator.clipboard.writeText(codeContent);
+        } else {
+          // 降级方案：传统方法
+          const textArea = document.createElement('textarea');
+          textArea.value = codeContent;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (!successful) throw new Error('execCommand failed');
+          } finally {
+            document.body.removeChild(textArea);
+          }
+        }
+        
+        // 显示复制成功反馈
+        const originalText = $copyBtn.text();
+        $copyBtn.text('已复制！');
+        $copyBtn.addClass('copied');
+        $copyBtn.css({ 'background': '#10b981', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text(originalText);
+          $copyBtn.removeClass('copied');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+      } catch (err) {
+        // 显示复制失败反馈
+        $copyBtn.text('复制失败');
+        $copyBtn.css({ 'background': '#ef4444', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text('复制');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+        console.error('复制失败:', err);
+      }
+    });
+  });
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><!-- 汉堡菜单按钮 - 仅在移动设备显示--><div class="mobile-menu-btn"><i class="fa fa-bars"></i></div><!-- 移动设备菜单 - 默认隐藏--><div class="mobile-menu"><div class="nav mobile-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 移动端信息区域 - 移除了头像和搜索按钮，因为它们现在始终显示在导航栏右上角--><div class="mobile-information"><!-- 保留空的信息区域以便保持菜单结构一致--><div></div></div></div><!-- 桌面端导航 - 默认显示--><div class="nav desktop-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 桌面端信息区域--><div class="information desktop-information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>【笔记】基于github Page创建hexo个人博客</a></h3></div><div class="post-content"><h3 id="安装环境"><a href="#安装环境" class="headerlink" title="安装环境"></a>安装环境</h3><ul>
 <li>Node.js：<a target="_blank" rel="noopener" href="https://nodejs.org/zh-cn">https://nodejs.org/zh-cn</a></li>
 <li>Git：<a target="_blank" rel="noopener" href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></li>
 </ul>
@@ -13,7 +117,7 @@ Git：https://git-scm.com/downloads
 <h3 id="添加密匙"><a href="#添加密匙" class="headerlink" title="添加密匙"></a>添加密匙</h3><p>进入 [C:\Users\用户名.ssh] 目录（要勾选显示“隐藏的项目”），用记事本打开公钥 id_rsa.pub 文件并复制里面的内容。</p>
 <p>登陆 GitHub ，进入 Settings 页面，选择左边栏的 SSH and GPG keys，点击 New SSH key。</p>
 <p>Title 随便取个名字，粘贴复制的 id_rsa.pub 内容到 Key 中，点击 Add SSH key 完成添加。</p>
-<h3 id="验证连接"><a href="#验证连接" class="headerlink" title="验证连接"></a>验证连接</h3><p>打开 Git Bash，输入 ssh -T <a href="mailto:&#103;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#99;&#111;&#x6d;">&#103;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#x62;&#46;&#99;&#111;&#x6d;</a> 出现 “Are you sure……”，输入 yes 回车确认。</p>
+<h3 id="验证连接"><a href="#验证连接" class="headerlink" title="验证连接"></a>验证连接</h3><p>打开 Git Bash，输入 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#103;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a> 出现 “Are you sure……”，输入 yes 回车确认。</p>
 <h3 id="创建仓库"><a href="#创建仓库" class="headerlink" title="创建仓库"></a>创建仓库</h3><p>填写仓库名，格式必须为<code>&lt;用户名&gt;.github.io</code>，然后点击<code>Create repository</code>。</p>
 <h3 id="安装-Hexo"><a href="#安装-Hexo" class="headerlink" title="安装 Hexo"></a>安装 Hexo</h3><p>使用 npm 一键安装 Hexo 博客程序</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
@@ -38,7 +142,7 @@ Git：https://git-scm.com/downloads
 <h3 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h3><ol>
 <li>npm 下载速度慢<br> 临时更换方法：在 npm 安装命令后面加上： <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">--registry https://registry.npm.taobao.org </span><br></pre></td></tr></table></figure></li>
 </ol>
-</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-05-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/tags/hexo/" title="hexo">hexo </a><a class="tag" href="/tags/Github-Page/" title="Github Page">Github Page </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.github.io/2025/05/27/【笔记】基于github page创建hexo个人博客/,Elijah,【笔记】基于github Page创建hexo个人博客,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2025/06/30/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91%E6%97%A5%E5%BF%97%E6%94%B6%E9%9B%86%E6%96%B9%E6%A1%88%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9F%BA%E4%BA%8EECK%E9%83%A8%E7%BD%B2%E7%94%9F%E4%BA%A7%E7%BA%A7ElasticSearch%20+%20Kibana%20+%20FileBeat/" title="【云原生】日志收集方案（一）：基于ECK部署生产级ElasticSearch + Kibana + FileBeat">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/02/26/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91%E5%9F%BA%E4%BA%8EPercona%20Operator%E6%94%AF%E6%8C%81%E5%85%A8%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%88%9B%E5%BB%BAPXC%E9%9B%86%E7%BE%A4%EF%BC%88manifest%E6%96%B9%E5%BC%8F%EF%BC%89/" title="【云原生】基于Percona Operator支持全命名空间创建PXC集群（manifest方式）">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-05-27</span><i class="fa fa-tag"></i><a class="tag" href="/categories/Linux/" title="Linux">Linux </a><a class="tag" href="/tags/hexo/" title="hexo">hexo </a><a class="tag" href="/tags/Github-Page/" title="Github Page">Github Page </a><span class="leancloud_visitors"></span></div></div></div></div><div class="share"><div class="evernote"><a class="fa fa-bookmark" href="" onclick="javascript:join_favorite()" ref="sidebar"></a></div><div class="weibo"><a class="fa fa-weibo" href="javascript:void((function(s,d,e){try{}catch(e){}var f='http://service.weibo.com/share/share.php?',u=d.location.href,p=['url=',e(u),'&amp;title=',e(d.title),'&amp;appkey=2924220432'].join('');function a(){if(!window.open([f,p].join(''),'mb',['toolbar=0,status=0,resizable=1,width=620,height=450,left=',(s.width-620)/2,',top=',(s.height-450)/2].join('')))u.href=[f,p].join('');};if(/Firefox/.test(navigator.userAgent)){setTimeout(a,0)}else{a()}})(screen,document,encodeURIComponent));"></a></div><div class="twitter"><a class="fa fa-twitter" target="_blank" rel="noopener" href="http://twitter.com/home?status=,https://sreok.cn/2025/05/27/【笔记】基于github page创建hexo个人博客/,Elijah,【笔记】基于github Page创建hexo个人博客,;"></a></div></div><div class="pagination"><ul class="clearfix"><li class="pre pagbuttons"><a class="btn" role="navigation" href="/2025/09/13/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91%E4%BA%91%E5%8E%9F%E7%94%9F%E7%9B%91%E6%8E%A7%E6%96%B9%E6%A1%88%EF%BC%88%E4%B8%80%EF%BC%89%EF%BC%9A%E5%9F%BA%E4%BA%8Ekube-Prometheus%E9%83%A8%E7%BD%B2Prometheus%E9%9B%86%E6%88%90%E7%9B%91%E6%8E%A7/" title="【云原生】云原生监控方案（一）：基于kube-Prometheus部署Prometheus集成监控">上一篇</a></li><li class="next pagbuttons"><a class="btn" role="navigation" href="/2025/02/26/%E3%80%90%E4%BA%91%E5%8E%9F%E7%94%9F%E3%80%91%E5%9F%BA%E4%BA%8EPercona%20Operator%E6%94%AF%E6%8C%81%E5%85%A8%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E5%88%9B%E5%BB%BAPXC%E9%9B%86%E7%BE%A4%EF%BC%88manifest%E6%96%B9%E5%BC%8F%EF%BC%89/" title="【云原生】基于Percona Operator支持全命名空间创建PXC集群（manifest方式）">下一篇</a></li></ul></div><script src="/js/visitors.js"></script><a id="comments"></a><div id="vcomments" style="margin:0 30px;"></div><script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script><script src="//cdn.jsdelivr.net/gh/xcss/valine@latest/dist/Valine.min.js"></script><script>var valine = new Valine({
   el:'#vcomments',
   notify:true || false, 
   verify:false|| false, 

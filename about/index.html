@@ -1,28 +1,286 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>关于 · Elijah</title><meta name="description" content="这里是对此文章的描述，有利于收录"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><div class="nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a class="current" href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><div class="information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a>关于</a></h3></div><div class="post-content"><div align="center">
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>关于 · Elijah</title><meta name="description" content=".about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .about-title {
+    font-size: 2.5rem;
+    color: #333;
+    ma"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
+$(document).ready(function() {
+  // 为所有代码块添加复制按钮
+  $('.highlight').each(function() {
+    // 获取当前代码块元素
+    const $highlightBlock = $(this);
+    
+    // 创建复制按钮
+    const $copyBtn = $('<button class="copy-button">复制</button>');
+    
+    // 设置按钮样式
+    $copyBtn.css({
+      'position': 'absolute',
+      'top': '10px',
+      'right': '10px',
+      'z-index': '10',
+      'background': '#4b5263',
+      'color': '#abb2bf',
+      'border': 'none',
+      'border-radius': '4px',
+      'padding': '6px 12px',
+      'font-size': '12px',
+      'cursor': 'pointer',
+      'transition': 'all 0.3s ease'
+    });
+    
+    // 鼠标悬停效果
+    $copyBtn.hover(
+      function() { $(this).css({ 'background': '#5c6370', 'color': '#e6e6e6' }); },
+      function() { $(this).css({ 'background': '#4b5263', 'color': '#abb2bf' }); }
+    );
+    
+    // 将按钮添加到代码块容器
+    $highlightBlock.append($copyBtn);
+    
+    // 添加复制按钮的点击事件
+    $copyBtn.on('click', async function() {
+      try {
+        // 尝试获取代码内容 (兼容不同的代码块结构)
+        let codeContent = '';
+        const $codeElement = $highlightBlock.find('td.code pre');
+        
+        if ($codeElement.length) {
+          codeContent = $codeElement.text();
+        } else {
+          // 备用选择器，以防结构不同
+          codeContent = $highlightBlock.find('pre').text() || '';
+        }
+        
+        if (!codeContent) {
+          throw new Error('未找到代码内容');
+        }
+        
+        // 使用现代的 Clipboard API 执行复制
+        if (navigator.clipboard && window.isSecureContext) {
+          // 首选：现代安全上下文
+          await navigator.clipboard.writeText(codeContent);
+        } else {
+          // 降级方案：传统方法
+          const textArea = document.createElement('textarea');
+          textArea.value = codeContent;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (!successful) throw new Error('execCommand failed');
+          } finally {
+            document.body.removeChild(textArea);
+          }
+        }
+        
+        // 显示复制成功反馈
+        const originalText = $copyBtn.text();
+        $copyBtn.text('已复制！');
+        $copyBtn.addClass('copied');
+        $copyBtn.css({ 'background': '#10b981', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text(originalText);
+          $copyBtn.removeClass('copied');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+      } catch (err) {
+        // 显示复制失败反馈
+        $copyBtn.text('复制失败');
+        $copyBtn.css({ 'background': '#ef4444', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text('复制');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+        console.error('复制失败:', err);
+      }
+    });
+  });
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><!-- 汉堡菜单按钮 - 仅在移动设备显示--><div class="mobile-menu-btn"><i class="fa fa-bars"></i></div><!-- 移动设备菜单 - 默认隐藏--><div class="mobile-menu"><div class="nav mobile-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a class="current" href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 移动端信息区域 - 移除了头像和搜索按钮，因为它们现在始终显示在导航栏右上角--><div class="mobile-information"><!-- 保留空的信息区域以便保持菜单结构一致--><div></div></div></div><!-- 桌面端导航 - 默认显示--><div class="nav desktop-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a class="current" href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 桌面端信息区域--><div class="information desktop-information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a></a></h3></div><div class="post-content"><style>
+  .about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .about-title {
+    font-size: 2.5rem;
+    color: #333;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+  
+  .profile-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    padding: 1rem 2rem;
+    margin-bottom: 3rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+  }
+  
+  .section-title {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 2px solid #f0f0f0;
+  }
+  
+  .about-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #666;
+  }
+  
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+  
+  .timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 2px;
+    background-color: #e0e0e0;
+  }
+  
+  .timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+  }
+  
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    left: -2.65rem;
+    width: 18px;
+    height: 18px;
+    background-color: #4786D6;
+    border-radius: 50%;
+    border: 3px solid #e6f0fa;
+  }
+  
+  .timeline-date {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #4786D6;
+    margin-bottom: 0.5rem;
+  }
+  
+  .timeline-content {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #666;
+  }
+  
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .tech-tag {
+    background-color: #f0f4f8;
+    color: #4786D6;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .tech-tag:hover {
+    background-color: #4786D6;
+    color: white;
+  }
+</style>
 
-<p>  <font face="黑体" color=#666666 size=20><strong>关于</strong></font></p>
-</div>
+<div class="about-container">
 
-<p><font face="黑体" size=5><strong>关于我</strong></font></p>
-<br/>
-
-<ul>
-<li>一名运维工程师</li>
-</ul>
-<br/>
-
-<p><font face="黑体" size=5><strong>关于站点</strong></font> </p>
-<br/>
-
-<ul>
-<li>2020.11<br>| 托管在腾讯云CVM+<code>Wordpress</code></li>
-<li>2021.08<br>| 迁移至海外<code>vps</code>，采用<code>docker-compose</code>+<code>halo 2.0</code></li>
-<li>2022.03<br>| 家庭工作站+<code>halo 2.0</code>+<code>ddns-go</code>动态解析</li>
-<li>2022.05<br>| 托管在阿里云ECS，采用<code>Kubernetes</code>+<code>halo 2.0</code></li>
-<li>2024.05<br>| 域名更改为<code>sreok.cn</code></li>
-<li>2025.05<br>| 基于<code>Github page</code>部署<code>Hexo</code>+<code>cloudflare</code> DNS解析加速</li>
-</ul>
-</div><div class="post-footer"><div class="meta"><div class="info"><span></span></div></div></div></div></div></div></div></div><script src="/js/search.js"></script><div class="hidden" id="search-popup"><div id="search-panel"><input type="text" id="local-search-input" name="q" results="0" placeholder="搜索..."><div id="local-search-results"></div></div></div><script>// 点击按钮显示弹窗
+  <div class="profile-card">
+    <h2 class="section-title">个人简介</h2>
+    <p class="about-content">
+      一名运维工程师，致力于云原生、容器化和自动化运维领域的研究与实践。
+    </p>
+    <div class="tech-tags">
+      <span class="tech-tag">Kubernetes</span>
+      <span class="tech-tag">Docker</span>
+      <span class="tech-tag">Linux</span>
+      <span class="tech-tag">监控系统</span>
+      <span class="tech-tag">自动化</span>
+      <span class="tech-tag">DevOps</span>
+    </div>
+  </div>
+  
+  <div class="profile-card">
+    <h2 class="section-title">站点历程</h2>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-date">2020.11</div>
+        <div class="timeline-content">
+          站点诞生，托管在腾讯云CVM+<code>Wordpress</code>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2021.08</div>
+        <div class="timeline-content">
+          迁移至海外<code>vps</code>，采用<code>docker-compose</code>+<code>halo 2.0</code>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2022.03</div>
+        <div class="timeline-content">
+          家庭工作站+<code>halo 2.0</code>+<code>ddns-go</code>动态解析
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2022.05</div>
+        <div class="timeline-content">
+          托管在阿里云ECS，采用<code>Kubernetes</code>+<code>halo 2.0</code>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2024.05</div>
+        <div class="timeline-content">
+          域名更改为<code>sreok.cn</code>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-date">2025.05</div>
+        <div class="timeline-content">
+          基于<code>Github page</code>部署<code>Hexo</code>+<code>cloudflare</code> DNS解析加速
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div><div class="post-footer"><div class="meta"><div class="info"><span></span></div></div></div></div></div></div></div></div><script src="/js/search.js"></script><div class="hidden" id="search-popup"><div id="search-panel"><input type="text" id="local-search-input" name="q" results="0" placeholder="搜索..."><div id="local-search-results"></div></div></div><script>// 点击按钮显示弹窗
 document.getElementById('search-button')?.addEventListener('click', function(event) {
     document.getElementById('search-popup').classList.remove('hidden');
     document.getElementById('local-search-input').focus();
