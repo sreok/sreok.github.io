@@ -1,0 +1,567 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>项目 · Elijah</title><meta name="description" content="/* 基础样式重置 */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Seg"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
+$(document).ready(function() {
+  // 为所有代码块添加复制按钮
+  $('.highlight').each(function() {
+    // 获取当前代码块元素
+    const $highlightBlock = $(this);
+    
+    // 创建复制按钮
+    const $copyBtn = $('<button class="copy-button">复制</button>');
+    
+    // 设置按钮样式
+    $copyBtn.css({
+      'position': 'absolute',
+      'top': '10px',
+      'right': '10px',
+      'z-index': '10',
+      'background': '#4b5263',
+      'color': '#abb2bf',
+      'border': 'none',
+      'border-radius': '4px',
+      'padding': '6px 12px',
+      'font-size': '12px',
+      'cursor': 'pointer',
+      'transition': 'all 0.3s ease'
+    });
+    
+    // 鼠标悬停效果
+    $copyBtn.hover(
+      function() { $(this).css({ 'background': '#5c6370', 'color': '#e6e6e6' }); },
+      function() { $(this).css({ 'background': '#4b5263', 'color': '#abb2bf' }); }
+    );
+    
+    // 将按钮添加到代码块容器
+    $highlightBlock.append($copyBtn);
+    
+    // 添加复制按钮的点击事件
+    $copyBtn.on('click', async function() {
+      try {
+        // 尝试获取代码内容 (兼容不同的代码块结构)
+        let codeContent = '';
+        const $codeElement = $highlightBlock.find('td.code pre');
+        
+        if ($codeElement.length) {
+          // 使用原生方法确保换行符正确保留
+          codeContent = $codeElement[0].innerText;
+        } else {
+          // 备用选择器，以防结构不同
+          const $preElement = $highlightBlock.find('pre');
+          if ($preElement.length) {
+            codeContent = $preElement[0].innerText;
+          }
+        }
+        
+        if (!codeContent) {
+          throw new Error('未找到代码内容');
+        }
+        
+        // 使用现代的 Clipboard API 执行复制
+        if (navigator.clipboard && window.isSecureContext) {
+          // 首选：现代安全上下文
+          await navigator.clipboard.writeText(codeContent);
+        } else {
+          // 降级方案：传统方法
+          const textArea = document.createElement('textarea');
+          textArea.value = codeContent;
+          textArea.style.position = 'fixed';
+          textArea.style.left = '-999999px';
+          textArea.style.top = '-999999px';
+          document.body.appendChild(textArea);
+          textArea.focus();
+          textArea.select();
+          
+          try {
+            const successful = document.execCommand('copy');
+            if (!successful) throw new Error('execCommand failed');
+          } finally {
+            document.body.removeChild(textArea);
+          }
+        }
+        
+        // 显示复制成功反馈
+        const originalText = $copyBtn.text();
+        $copyBtn.text('已复制！');
+        $copyBtn.addClass('copied');
+        $copyBtn.css({ 'background': '#10b981', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text(originalText);
+          $copyBtn.removeClass('copied');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+      } catch (err) {
+        // 显示复制失败反馈
+        $copyBtn.text('复制失败');
+        $copyBtn.css({ 'background': '#ef4444', 'color': 'white' });
+        
+        // 2秒后恢复按钮状态
+        setTimeout(function() {
+          $copyBtn.text('复制');
+          $copyBtn.css({ 'background': '#4b5263', 'color': '#abb2bf' });
+        }, 2000);
+        
+        console.error('复制失败:', err);
+      }
+    });
+  });
+});</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><!-- 汉堡菜单按钮 - 仅在移动设备显示--><div class="mobile-menu-btn"><i class="fa fa-bars"></i></div><!-- 移动设备菜单 - 默认隐藏--><div class="mobile-menu"><div class="nav mobile-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 移动端信息区域 - 移除了头像和搜索按钮，因为它们现在始终显示在导航栏右上角--><div class="mobile-information"><!-- 保留空的信息区域以便保持菜单结构一致--><div></div></div></div><!-- 桌面端导航 - 默认显示--><div class="nav desktop-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a class="current" href="/projects">项目</a></li><li><a href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 桌面端信息区域--><div class="information desktop-information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a></a></h3></div><div class="post-content"><style>
+  /* 基础样式重置 */
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f5f5f5;
+  }
+  
+  /* 容器样式 */
+  .project-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+  
+  /* 页面标题 */
+  .page-title {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  
+  .page-title h1 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+    color: #2c3e50;
+  }
+  
+  .page-title p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  /* 项目部分标题 */
+  .section-title {
+    font-size: 1.8rem;
+    margin: 40px 0 25px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #3498db;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+  }
+  
+  .section-title i {
+    margin-right: 10px;
+    color: #3498db;
+  }
+  
+  /* 项目网格 */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+  }
+  
+  /* 项目卡片 */
+  .project-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* 项目卡片图标区域 */
+  .project-icon {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    font-size: 4rem;
+    color: #3498db;
+  }
+  
+  /* 项目卡片内容 */
+  .project-content {
+    padding: 20px;
+  }
+  
+  .project-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 15px;
+  }
+  
+  .project-header h3 {
+    font-size: 1.3rem;
+    color: #2c3e50;
+  }
+  
+  .project-tag {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+  }
+  
+  .project-description {
+    font-size: 0.95rem;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  /* 项目卡片底部 */
+  .project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .project-stats {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .stat {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    display: flex;
+    align-items: center;
+  }
+  
+  .stat i {
+    margin-right: 5px;
+  }
+  
+  .project-link {
+    color: #3498db;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+  }
+  
+  .project-link:hover {
+    color: #2980b9;
+  }
+  
+  .project-link i {
+    margin-left: 5px;
+  }
+  
+  /* 响应式调整 */
+  @media (max-width: 768px) {
+    .project-container {
+      padding: 20px 15px;
+    }
+    
+    .page-title h1 {
+      font-size: 2rem;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+    }
+    
+    .project-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<div class="project-container">
+  <!-- 页面标题 -->
+  <div class="page-title">
+    <h1>项目展示</h1>
+    <p>这里展示了我个人开发、参与合作以及推荐的优质项目</p>
+  </div>
+  
+  <!-- 我的项目 -->
+  <div class="section-title">
+    <i class="fa fa-rocket"></i>
+    <h2>我的项目</h2>
+  </div>
+  <div class="project-grid">
+    <!-- 项目1 -->
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-cloud"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>云原生监控系统</h3>
+          <span class="project-tag">Kubernetes</span>
+        </div>
+        <p class="project-description">基于Prometheus和Grafana构建的云原生监控解决方案，支持自动发现、告警配置和可视化展示。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 12</span>
+            <span class="stat"><i class="fa fa-star"></i> 45</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    
+<pre><code>&lt;!-- 项目2 --&gt;
+&lt;div class=&quot;project-card&quot;&gt;
+  &lt;div class=&quot;project-icon&quot;&gt;
+    &lt;i class=&quot;fa fa-database&quot;&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;project-content&quot;&gt;
+    &lt;div class=&quot;project-header&quot;&gt;
+      &lt;h3&gt;高可用数据库集群&lt;/h3&gt;
+      &lt;span class=&quot;project-tag&quot;&gt;MySQL&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;project-description&quot;&gt;基于Percona XtraDB Cluster构建的高可用数据库集群解决方案，支持自动故障转移和读写分离。&lt;/p&gt;
+    &lt;div class=&quot;project-footer&quot;&gt;
+      &lt;div class=&quot;project-stats&quot;&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 8&lt;/span&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 32&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 项目3 --&gt;
+&lt;div class=&quot;project-card&quot;&gt;
+  &lt;div class=&quot;project-icon&quot;&gt;
+    &lt;i class=&quot;fa fa-shield&quot;&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;project-content&quot;&gt;
+    &lt;div class=&quot;project-header&quot;&gt;
+      &lt;h3&gt;容器安全平台&lt;/h3&gt;
+      &lt;span class=&quot;project-tag&quot;&gt;Security&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;project-description&quot;&gt;为Kubernetes集群提供容器安全扫描、运行时监控和漏洞管理的完整解决方案。&lt;/p&gt;
+    &lt;div class=&quot;project-footer&quot;&gt;
+      &lt;div class=&quot;project-stats&quot;&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 5&lt;/span&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 28&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+  </div>
+  
+  <!-- 参与项目 -->
+  <div class="section-title">
+    <i class="fa fa-users"></i>
+    <h2>参与项目</h2>
+  </div>
+  <div class="project-grid">
+    <!-- 参与项目1 -->
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-server"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>微服务架构平台</h3>
+          <span class="project-tag">Microservice</span>
+        </div>
+        <p class="project-description">基于Spring Cloud和Kubernetes构建的企业级微服务平台，支持服务治理、配置中心和网关管理。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 24</span>
+            <span class="stat"><i class="fa fa-star"></i> 126</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    
+<pre><code>&lt;!-- 参与项目2 --&gt;
+&lt;div class=&quot;project-card&quot;&gt;
+  &lt;div class=&quot;project-icon&quot;&gt;
+    &lt;i class=&quot;fa fa-line-chart&quot;&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;project-content&quot;&gt;
+    &lt;div class=&quot;project-header&quot;&gt;
+      &lt;h3&gt;数据可视化平台&lt;/h3&gt;
+      &lt;span class=&quot;project-tag&quot;&gt;Data&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;project-description&quot;&gt;集成多种数据源的数据可视化分析平台，提供实时监控大屏和交互式数据探索功能。&lt;/p&gt;
+    &lt;div class=&quot;project-footer&quot;&gt;
+      &lt;div class=&quot;project-stats&quot;&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 18&lt;/span&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 95&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 参与项目3 --&gt;
+&lt;div class=&quot;project-card&quot;&gt;
+  &lt;div class=&quot;project-icon&quot;&gt;
+    &lt;i class=&quot;fa fa-cogs&quot;&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;project-content&quot;&gt;
+    &lt;div class=&quot;project-header&quot;&gt;
+      &lt;h3&gt;自动化运维平台&lt;/h3&gt;
+      &lt;span class=&quot;project-tag&quot;&gt;DevOps&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;project-description&quot;&gt;基于Ansible和Jenkins的自动化运维平台，实现基础设施即代码和持续集成/持续部署流程。&lt;/p&gt;
+    &lt;div class=&quot;project-footer&quot;&gt;
+      &lt;div class=&quot;project-stats&quot;&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 31&lt;/span&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 157&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+  </div>
+  
+  <!-- 推荐项目 -->
+  <div class="section-title">
+    <i class="fa fa-thumbs-up"></i>
+    <h2>推荐项目</h2>
+  </div>
+  <div class="project-grid">
+    <!-- 推荐项目1 -->
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-cloud-upload"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>对象存储服务</h3>
+          <span class="project-tag">Storage</span>
+        </div>
+        <p class="project-description">兼容S3协议的分布式对象存储服务，提供高可用、高可靠的数据存储解决方案。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 45</span>
+            <span class="stat"><i class="fa fa-star"></i> 289</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    
+<pre><code>&lt;!-- 推荐项目2 --&gt;
+&lt;div class=&quot;project-card&quot;&gt;
+  &lt;div class=&quot;project-icon&quot;&gt;
+    &lt;i class=&quot;fa fa-search&quot;&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;project-content&quot;&gt;
+    &lt;div class=&quot;project-header&quot;&gt;
+      &lt;h3&gt;日志分析平台&lt;/h3&gt;
+      &lt;span class=&quot;project-tag&quot;&gt;ELK&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;project-description&quot;&gt;基于Elasticsearch、Logstash和Kibana的日志收集、分析和可视化平台，支持实时监控和告警。&lt;/p&gt;
+    &lt;div class=&quot;project-footer&quot;&gt;
+      &lt;div class=&quot;project-stats&quot;&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 67&lt;/span&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 356&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- 推荐项目3 --&gt;
+&lt;div class=&quot;project-card&quot;&gt;
+  &lt;div class=&quot;project-icon&quot;&gt;
+    &lt;i class=&quot;fa fa-lock&quot;&gt;&lt;/i&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;project-content&quot;&gt;
+    &lt;div class=&quot;project-header&quot;&gt;
+      &lt;h3&gt;身份认证系统&lt;/h3&gt;
+      &lt;span class=&quot;project-tag&quot;&gt;OAuth&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;project-description&quot;&gt;基于OAuth 2.0和JWT的统一身份认证和授权系统，提供单点登录和细粒度权限控制。&lt;/p&gt;
+    &lt;div class=&quot;project-footer&quot;&gt;
+      &lt;div class=&quot;project-stats&quot;&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 38&lt;/span&gt;
+        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 214&lt;/span&gt;
+      &lt;/div&gt;
+      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+  </div>
+</div>
+
+<!-- 简单的JavaScript交互效果 -->
+<script>
+  // 页面加载完成后执行
+  document.addEventListener('DOMContentLoaded', function() {
+    // 为卡片添加点击效果
+    const cards = document.querySelectorAll('.project-card');
+    cards.forEach(card => {
+      card.addEventListener('click', function(e) {
+        // 避免点击链接时触发卡片动画
+        if (e.target.tagName === 'A' || e.target.closest('a')) return;
+        
+        // 添加点击时的缩放效果
+        card.style.transform = 'scale(0.98)';
+        setTimeout(() => {
+          card.style.transform = '';
+        }, 150);
+      });
+    });
+  });
+</script>
+</div><div class="post-footer"><div class="meta"><div class="info"><i class="fa fa-sun-o"></i><span class="date">2025-09-14</span><span class="leancloud_visitors"></span></div></div></div></div></div></div></div></div><script src="/js/search.js"></script><div class="hidden" id="search-popup"><div id="search-panel"><input type="text" id="local-search-input" name="q" results="0" placeholder="搜索..."><div id="local-search-results"></div></div></div><script>// 点击按钮显示弹窗
+document.getElementById('search-button')?.addEventListener('click', function(event) {
+    document.getElementById('search-popup').classList.remove('hidden');
+    document.getElementById('local-search-input').focus();
+    event.stopPropagation();
+});
+
+// 点击弹窗外关闭
+document.addEventListener('click', function() {
+    document.getElementById('search-popup').classList.add('hidden');
+});
+
+// 阻止弹窗内冒泡
+document.getElementById('search-popup').addEventListener('click', function(event) {
+    event.stopPropagation();
+});
+
+// 初始化搜索功能
+document.addEventListener('DOMContentLoaded', function() {
+    const path = "/search.json";
+    if (typeof searchFunc === 'function') {
+    searchFunc(path, 'local-search-input', 'local-search-results');
+    } else {
+    console.error('searchFunc is not defined');
+    }
+});</script><script src="/js/jquery-migrate-1.2.1.min.js"></script><script src="/js/jquery.appear.js"></script><script src="/js/add-bookmark.js"></script><script src="/js/baidu-tongji.js"></script></body></html>
