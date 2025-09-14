@@ -1,13 +1,10 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>关于 · Elijah</title><meta name="description" content=".about-container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 2rem;
-  }
-  
-  .about-title {
-    font-size: 2.5rem;
-    color: #333;
-    ma"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="X-UA-Compatible" content="IE=edge"><meta name="author" content="Elijah"><title>关于 · Elijah</title><meta name="description" content="/* 基础样式 */
+  :root {
+    --primary-color: #4786D6;
+    --primary-light: #e6f0fa;
+    --secondary-color: #6c757d;
+    --dark-color: #2c3e50;
+    --shad"><meta name="keywords" content="Elijah博客,Elijah Blog,博客,Elijah,Linux,Kubernetes,Docker,DevOps"><meta content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="renderer" content="webkit"><link rel="short icon" href="/images/favicon.png" type="image/x-icon"><link rel="stylesheet" href="/css/style.css"><link rel="stylesheet" href="/css/links.css"><link rel="stylesheet" href="/css/search.css"><link rel="stylesheet" href="/css/blog_basic.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/7.0.0/css/all.css"><link rel="alternate" type="application/atom+xml" title="ATOM 1.0" href="/atom.xml"><script src="/js/jquery.js"></script><script src="/js/mobile-menu.js"></script><!-- 代码块一键复制功能 - 现代化实现--><script>// 页面加载完成后执行
 $(document).ready(function() {
   // 为所有代码块添加复制按钮
   $('.highlight').each(function() {
@@ -116,51 +113,100 @@ $(document).ready(function() {
     });
   });
 });</script><meta name="generator" content="Hexo 7.3.0"></head><body><div class="sidebar animated fadeInDown"><div class="logo-title"><div class="title"><img src="/images/logo.png" style="width:127px;"><h3 title=""><a href="/">Elijah</a></h3><div class="description"><p>Do one thing at a time, and do well</p></div></div></div><ul class="social-links"><li><a target="_blank" rel="noopener" href="https://github.com/sreok"><i class="fa-brands fa-github"></i></a></li><li><a href="mailto:admin@vsoul.cn"><i class="fa fa-envelope"></i></a></li><li><a href="/rss.xml"><i class="fa fa-rss"></i></a></li></ul><div class="footer"><div class="p"> <span>© 2020 - 2025 Elijah All Rights Reserved.</span></div><div class="by_farbox"><span>Technical support provided by </span><a href="https://github.com/sreok" target="_blank">Elijah  </a><span> & </span><a href="https://hexo.io/zh-cn/" target="_blank">Hexo </a></div><div class="beian"><img src="/images/gongan.png" style="height:10px;margin-right: 10px;position: relative;top: 1px;"><a href="https://beian.miit.gov.cn/" target="_blank">冀ICP备2022029112号</a></div></div></div><div class="main"><div class="page-top animated fadeInDown"><!-- 汉堡菜单按钮 - 仅在移动设备显示--><div class="mobile-menu-btn"><i class="fa fa-bars"></i></div><!-- 移动设备菜单 - 默认隐藏--><div class="mobile-menu"><div class="nav mobile-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a class="current" href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 移动端信息区域 - 移除了头像和搜索按钮，因为它们现在始终显示在导航栏右上角--><div class="mobile-information"><!-- 保留空的信息区域以便保持菜单结构一致--><div></div></div></div><!-- 桌面端导航 - 默认显示--><div class="nav desktop-nav"><li><a href="/">首页</a></li><li><a href="/archives">归档</a></li><li><a href="/tags">标签</a></li><li><a href="/projects">项目</a></li><li><a class="current" href="/about">关于</a></li><li><a href="/links">友链</a></li><li><a href="/guestbook">留言</a></li></div><!-- 桌面端信息区域--><div class="information desktop-information"><div class="back_btn"><li><a class="fa fa-chevron-left" onclick="window.history.go(-1)" style="display:none;"> </a></li></div><div class="search_btn"><li><a id="search-button"><i class="fa fa-search"></i></a></li></div><div class="avatar"><img src="/images/favicon.png"></div></div></div><div class="autopagerize_page_element"><div class="content"><div class="post-page"><div class="post animated fadeInDown"><div class="post-title"><h3><a></a></h3></div><div class="post-content"><style>
+  /* 基础样式 */
+  :root {
+    --primary-color: #4786D6;
+    --primary-light: #e6f0fa;
+    --secondary-color: #6c757d;
+    --dark-color: #2c3e50;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-hover: 0 8px 30px rgba(0, 0, 0, 0.12);
+    --transition: all 0.3s ease;
+  }
+  
   .about-container {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 2rem 1.5rem;
   }
   
-  .about-title {
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-  }
-  
+  /* 个人资料卡片 */
   .profile-card {
-    background-color: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    padding: 1rem 2rem;
-    margin-bottom: 3rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+    border: 1px solid rgba(0, 0, 0, 0.05);
   }
   
   .profile-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    box-shadow: var(--shadow-hover);
   }
   
   .section-title {
     font-size: 1.8rem;
-    color: #333;
+    color: var(--dark-color);
     margin-bottom: 1.5rem;
     padding-bottom: 0.8rem;
     border-bottom: 2px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  
+  .section-title i {
+    color: var(--primary-color);
+    font-size: 1.5rem;
   }
   
   .about-content {
     font-size: 1.1rem;
     line-height: 1.8;
-    color: #666;
+    text-align: center;
+    color: var(--secondary-color);
+    margin-bottom: 1.5rem;
   }
   
+  .profile-job {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+  
+  /* 技术标签 */
+  .tech-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin: 1.5rem 0;
+    justify-content: center;
+  }
+  
+  .tech-tag {
+    background-color: var(--primary-light);
+    color: var(--primary-color);
+    padding: 0.4rem 1rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+  }
+  
+  .tech-tag:hover {
+    background-color: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+  }
+  
+  /* 时间线样式 */
   .timeline {
     position: relative;
-    padding-left: 2rem;
+    padding-left: 2.5rem;
   }
   
   .timeline::before {
@@ -170,7 +216,7 @@ $(document).ready(function() {
     left: 0;
     height: 100%;
     width: 2px;
-    background-color: #e0e0e0;
+    background: linear-gradient(to bottom, var(--primary-color), rgba(71, 134, 214, 0.2));
   }
   
   .timeline-item {
@@ -182,56 +228,117 @@ $(document).ready(function() {
     content: '';
     position: absolute;
     top: 0.5rem;
-    left: -2.65rem;
-    width: 18px;
-    height: 18px;
-    background-color: #4786D6;
+    left: -3.3rem;
+    width: 22px;
+    height: 22px;
+    background-color: white;
     border-radius: 50%;
-    border: 3px solid #e6f0fa;
+    border: 3px solid var(--primary-color);
+    z-index: 1;
+    transition: var(--transition);
+  }
+  
+  .timeline-item:hover::before {
+    transform: scale(1.2);
+    box-shadow: 0 0 0 5px rgba(71, 134, 214, 0.1);
   }
   
   .timeline-date {
     font-size: 1rem;
     font-weight: 600;
-    color: #4786D6;
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
+    display: inline-block;
+    padding: 0.2rem 0.8rem;
+    background-color: var(--primary-light);
+    border-radius: 20px;
   }
   
   .timeline-content {
     font-size: 1rem;
     line-height: 1.6;
-    color: #666;
+    color: var(--secondary-color);
+    background-color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   }
   
-  .tech-tags {
+  .timeline-content code {
+    background-color: #f8f9fa;
+    color: var(--primary-color);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 0.9em;
+  }
+  
+  /* 联系部分 */
+  .contact-section {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+  }
+  
+  .contact-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.5rem;
   }
   
-  .tech-tag {
-    background-color: #f0f4f8;
-    color: #4786D6;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    transition: all 0.3s ease;
+  .contact-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    color: var(--primary-color);
+    border-radius: 50%;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: var(--transition);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
   }
   
-  .tech-tag:hover {
-    background-color: #4786D6;
+  .contact-link:hover {
+    transform: translateY(-3px) scale(1.05);
+    background-color: var(--primary-color);
     color: white;
+    box-shadow: 0 4px 15px rgba(71, 134, 214, 0.3);
+  }
+  
+  /* 响应式设计 */
+  @media screen and (max-width: 768px) {
+    .profile-card,
+    .contact-section {
+      padding: 1.5rem;
+    }
+    
+    .timeline {
+      padding-left: 2rem;
+    }
+    
+    .timeline-item::before {
+      left: -2.25rem;
+      width: 18px;
+      height: 18px;
+    }
   }
 </style>
 
 <div class="about-container">
-
+  <!-- 个人简介 -->
   <div class="profile-card">
-    <h2 class="section-title">个人简介</h2>
+    <h2 class="section-title"><i class="fas fa-user-circle"></i>个人简介</h2>
+    <p class="profile-job">云原生运维工程师</p>
     <p class="about-content">
-      一名运维工程师，致力于云原生、容器化和自动化运维领域的研究与实践。
+      专注于云原生、容器化和自动化领域的运维工程师。
     </p>
     <div class="tech-tags">
       <span class="tech-tag">Kubernetes</span>
@@ -240,11 +347,14 @@ $(document).ready(function() {
       <span class="tech-tag">监控系统</span>
       <span class="tech-tag">自动化</span>
       <span class="tech-tag">DevOps</span>
+      <span class="tech-tag">CI/CD</span>
+      <span class="tech-tag">容器编排</span>
     </div>
   </div>
   
+  <!-- 站点历程 -->
   <div class="profile-card">
-    <h2 class="section-title">站点历程</h2>
+    <h2 class="section-title"><i class="fas fa-history"></i>站点历程</h2>
     <div class="timeline">
       <div class="timeline-item">
         <div class="timeline-date">2020.11</div>
@@ -282,6 +392,17 @@ $(document).ready(function() {
           基于<code>Github page</code>部署<code>Hexo</code>+<code>cloudflare</code> DNS解析加速
         </div>
       </div>
+    </div>
+  </div>
+  
+  <!-- 联系方式 -->
+  <div class="contact-section">
+    <h2 class="section-title"><i class="fas fa-envelope"></i>联系方式</h2>
+    <p class="about-content" style="text-align: center;">欢迎关注我的社交媒体账号或通过邮件联系我</p>
+    <div class="contact-links">
+      <a href="https://github.com/sreok" class="contact-link" target="_blank"><i class="fab fa-github"></i></a>
+      <a href="#" class="contact-link" target="_blank"><i class="fab fa-weixin"></i></a>
+      <a href="mailto:admin@vsoul.cn" class="contact-link"><i class="fas fa-envelope"></i></a>
     </div>
   </div>
 </div></div><div class="post-footer"><div class="meta"><div class="info"><span></span></div></div></div></div></div></div></div></div><script src="/js/search.js"></script><div class="hidden" id="search-popup"><div id="search-panel"><input type="text" id="local-search-input" name="q" results="0" placeholder="搜索..."><div id="local-search-results"></div></div></div><script>// 点击按钮显示弹窗
