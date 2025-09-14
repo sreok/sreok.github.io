@@ -224,6 +224,7 @@ $(document).ready(function() {
   .project-tag {
     background-color: #e3f2fd;
     color: #1976d2;
+    margin-right: 5px;
     padding: 4px 10px;
     border-radius: 20px;
     font-size: 0.8rem;
@@ -318,71 +319,64 @@ $(document).ready(function() {
       </div>
       <div class="project-content">
         <div class="project-header">
-          <h3>云原生监控系统</h3>
-          <span class="project-tag">Kubernetes</span>
+          <h3>容器镜像代理服务</h3>
+          <span class="project-tag">Cloudflare</span>
+          <span class="project-tag">Docker</span>
         </div>
-        <p class="project-description">基于Prometheus和Grafana构建的云原生监控解决方案，支持自动发现、告警配置和可视化展示。</p>
+        <p class="project-description">基于Cloudflare的容器镜像代理服务，支持私有镜像仓库的访问和缓存，提高镜像拉取效率。</p>
         <div class="project-footer">
           <div class="project-stats">
             <span class="stat"><i class="fa fa-code-fork"></i> 12</span>
             <span class="stat"><i class="fa fa-star"></i> 45</span>
           </div>
+          <a target="_blank" rel="noopener" href="https://hub.sreok.cn" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-database"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>高可用数据库集群</h3>
+          <span class="project-tag">MySQL</span>
+        </div>
+        <p class="project-description">基于Percona XtraDB Cluster构建的高可用数据库集群解决方案，支持自动故障转移和读写分离。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 8</span>
+            <span class="stat"><i class="fa fa-star"></i> 32</span>
+          </div>
           <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
         </div>
       </div>
     </div>
-    
-<pre><code>&lt;!-- 项目2 --&gt;
-&lt;div class=&quot;project-card&quot;&gt;
-  &lt;div class=&quot;project-icon&quot;&gt;
-    &lt;i class=&quot;fa fa-database&quot;&gt;&lt;/i&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;project-content&quot;&gt;
-    &lt;div class=&quot;project-header&quot;&gt;
-      &lt;h3&gt;高可用数据库集群&lt;/h3&gt;
-      &lt;span class=&quot;project-tag&quot;&gt;MySQL&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;project-description&quot;&gt;基于Percona XtraDB Cluster构建的高可用数据库集群解决方案，支持自动故障转移和读写分离。&lt;/p&gt;
-    &lt;div class=&quot;project-footer&quot;&gt;
-      &lt;div class=&quot;project-stats&quot;&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 8&lt;/span&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 32&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;!-- 项目3 --&gt;
-&lt;div class=&quot;project-card&quot;&gt;
-  &lt;div class=&quot;project-icon&quot;&gt;
-    &lt;i class=&quot;fa fa-shield&quot;&gt;&lt;/i&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;project-content&quot;&gt;
-    &lt;div class=&quot;project-header&quot;&gt;
-      &lt;h3&gt;容器安全平台&lt;/h3&gt;
-      &lt;span class=&quot;project-tag&quot;&gt;Security&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;project-description&quot;&gt;为Kubernetes集群提供容器安全扫描、运行时监控和漏洞管理的完整解决方案。&lt;/p&gt;
-    &lt;div class=&quot;project-footer&quot;&gt;
-      &lt;div class=&quot;project-stats&quot;&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 5&lt;/span&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 28&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-shield"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>容器安全平台</h3>
+          <span class="project-tag">Security</span>
+        </div>
+        <p class="project-description">为Kubernetes集群提供容器安全扫描、运行时监控和漏洞管理的完整解决方案。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 5</span>
+            <span class="stat"><i class="fa fa-star"></i> 28</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
   </div>
-  
-  <!-- 参与项目 -->
   <div class="section-title">
     <i class="fa fa-users"></i>
     <h2>参与项目</h2>
   </div>
   <div class="project-grid">
-    <!-- 参与项目1 -->
     <div class="project-card">
       <div class="project-icon">
         <i class="fa fa-server"></i>
@@ -402,58 +396,50 @@ $(document).ready(function() {
         </div>
       </div>
     </div>
-    
-<pre><code>&lt;!-- 参与项目2 --&gt;
-&lt;div class=&quot;project-card&quot;&gt;
-  &lt;div class=&quot;project-icon&quot;&gt;
-    &lt;i class=&quot;fa fa-line-chart&quot;&gt;&lt;/i&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;project-content&quot;&gt;
-    &lt;div class=&quot;project-header&quot;&gt;
-      &lt;h3&gt;数据可视化平台&lt;/h3&gt;
-      &lt;span class=&quot;project-tag&quot;&gt;Data&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;project-description&quot;&gt;集成多种数据源的数据可视化分析平台，提供实时监控大屏和交互式数据探索功能。&lt;/p&gt;
-    &lt;div class=&quot;project-footer&quot;&gt;
-      &lt;div class=&quot;project-stats&quot;&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 18&lt;/span&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 95&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;!-- 参与项目3 --&gt;
-&lt;div class=&quot;project-card&quot;&gt;
-  &lt;div class=&quot;project-icon&quot;&gt;
-    &lt;i class=&quot;fa fa-cogs&quot;&gt;&lt;/i&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;project-content&quot;&gt;
-    &lt;div class=&quot;project-header&quot;&gt;
-      &lt;h3&gt;自动化运维平台&lt;/h3&gt;
-      &lt;span class=&quot;project-tag&quot;&gt;DevOps&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;project-description&quot;&gt;基于Ansible和Jenkins的自动化运维平台，实现基础设施即代码和持续集成/持续部署流程。&lt;/p&gt;
-    &lt;div class=&quot;project-footer&quot;&gt;
-      &lt;div class=&quot;project-stats&quot;&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 31&lt;/span&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 157&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-line-chart"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>数据可视化平台</h3>
+          <span class="project-tag">Data</span>
+        </div>
+        <p class="project-description">集成多种数据源的数据可视化分析平台，提供实时监控大屏和交互式数据探索功能。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 18</span>
+            <span class="stat"><i class="fa fa-star"></i> 95</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-cogs"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>自动化运维平台</h3>
+          <span class="project-tag">DevOps</span>
+        </div>
+        <p class="project-description">基于Ansible和Jenkins的自动化运维平台，实现基础设施即代码和持续集成/持续部署流程。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 31</span>
+            <span class="stat"><i class="fa fa-star"></i> 157</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
   </div>
-  
-  <!-- 推荐项目 -->
   <div class="section-title">
     <i class="fa fa-thumbs-up"></i>
     <h2>推荐项目</h2>
   </div>
   <div class="project-grid">
-    <!-- 推荐项目1 -->
     <div class="project-card">
       <div class="project-icon">
         <i class="fa fa-cloud-upload"></i>
@@ -473,64 +459,52 @@ $(document).ready(function() {
         </div>
       </div>
     </div>
-    
-<pre><code>&lt;!-- 推荐项目2 --&gt;
-&lt;div class=&quot;project-card&quot;&gt;
-  &lt;div class=&quot;project-icon&quot;&gt;
-    &lt;i class=&quot;fa fa-search&quot;&gt;&lt;/i&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;project-content&quot;&gt;
-    &lt;div class=&quot;project-header&quot;&gt;
-      &lt;h3&gt;日志分析平台&lt;/h3&gt;
-      &lt;span class=&quot;project-tag&quot;&gt;ELK&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;project-description&quot;&gt;基于Elasticsearch、Logstash和Kibana的日志收集、分析和可视化平台，支持实时监控和告警。&lt;/p&gt;
-    &lt;div class=&quot;project-footer&quot;&gt;
-      &lt;div class=&quot;project-stats&quot;&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 67&lt;/span&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 356&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;!-- 推荐项目3 --&gt;
-&lt;div class=&quot;project-card&quot;&gt;
-  &lt;div class=&quot;project-icon&quot;&gt;
-    &lt;i class=&quot;fa fa-lock&quot;&gt;&lt;/i&gt;
-  &lt;/div&gt;
-  &lt;div class=&quot;project-content&quot;&gt;
-    &lt;div class=&quot;project-header&quot;&gt;
-      &lt;h3&gt;身份认证系统&lt;/h3&gt;
-      &lt;span class=&quot;project-tag&quot;&gt;OAuth&lt;/span&gt;
-    &lt;/div&gt;
-    &lt;p class=&quot;project-description&quot;&gt;基于OAuth 2.0和JWT的统一身份认证和授权系统，提供单点登录和细粒度权限控制。&lt;/p&gt;
-    &lt;div class=&quot;project-footer&quot;&gt;
-      &lt;div class=&quot;project-stats&quot;&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-code-fork&quot;&gt;&lt;/i&gt; 38&lt;/span&gt;
-        &lt;span class=&quot;stat&quot;&gt;&lt;i class=&quot;fa fa-star&quot;&gt;&lt;/i&gt; 214&lt;/span&gt;
-      &lt;/div&gt;
-      &lt;a href=&quot;#&quot; class=&quot;project-link&quot;&gt;查看详情 &lt;i class=&quot;fa fa-arrow-right&quot;&gt;&lt;/i&gt;&lt;/a&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>日志分析平台</h3>
+          <span class="project-tag">ELK</span>
+        </div>
+        <p class="project-description">基于Elasticsearch、Logstash和Kibana的日志收集、分析和可视化平台，支持实时监控和告警。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 67</span>
+            <span class="stat"><i class="fa fa-star"></i> 356</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-icon">
+        <i class="fa fa-lock"></i>
+      </div>
+      <div class="project-content">
+        <div class="project-header">
+          <h3>身份认证系统</h3>
+          <span class="project-tag">OAuth</span>
+        </div>
+        <p class="project-description">基于OAuth 2.0和JWT的统一身份认证和授权系统，提供单点登录和细粒度权限控制。</p>
+        <div class="project-footer">
+          <div class="project-stats">
+            <span class="stat"><i class="fa fa-code-fork"></i> 38</span>
+            <span class="stat"><i class="fa fa-star"></i> 214</span>
+          </div>
+          <a href="#" class="project-link">查看详情 <i class="fa fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
-
-<!-- 简单的JavaScript交互效果 -->
 <script>
-  // 页面加载完成后执行
   document.addEventListener('DOMContentLoaded', function() {
-    // 为卡片添加点击效果
     const cards = document.querySelectorAll('.project-card');
     cards.forEach(card => {
       card.addEventListener('click', function(e) {
-        // 避免点击链接时触发卡片动画
         if (e.target.tagName === 'A' || e.target.closest('a')) return;
-        
-        // 添加点击时的缩放效果
         card.style.transform = 'scale(0.98)';
         setTimeout(() => {
           card.style.transform = '';
