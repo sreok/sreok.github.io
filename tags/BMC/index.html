@@ -41,10 +41,14 @@ $(document).ready(function() {
         const $codeElement = $highlightBlock.find('td.code pre');
         
         if ($codeElement.length) {
-          codeContent = $codeElement.text();
+          // 使用原生方法确保换行符正确保留
+          codeContent = $codeElement[0].innerText;
         } else {
           // 备用选择器，以防结构不同
-          codeContent = $highlightBlock.find('pre').text() || '';
+          const $preElement = $highlightBlock.find('pre');
+          if ($preElement.length) {
+            codeContent = $preElement[0].innerText;
+          }
         }
         
         if (!codeContent) {
